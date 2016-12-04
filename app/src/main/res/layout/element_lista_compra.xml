@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:id="@+id/rl_element_lista"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chkArticulo" />
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtArticulo"
+        android:layout_alignBaseline="@+id/chkArticulo"
+        android:layout_alignBottom="@+id/chkArticulo"
+        android:layout_toRightOf="@+id/chkArticulo"
+        android:layout_toEndOf="@+id/chkArticulo" />
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtUnit"
+        android:layout_alignBaseline="@+id/txtArticulo"
+        android:layout_alignBottom="@+id/txtArticulo"
+        android:layout_toRightOf="@+id/txtArticulo"
+        android:layout_toEndOf="@+id/txtArticulo" />
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtPrice"
+        android:layout_below="@id/txtArticulo"
+        android:layout_toRightOf="@id/chkArticulo"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_more_vert"
+        android:id="@+id/imgEditar"
+        android:layout_alignTop="@+id/txtArticulo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_article_save"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.shop.oasaustre.shoppinglist.activity.ArticleSaveActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="20dp"
+
+        android:background="@drawable/operation_articles"
+        android:id="@+id/rl_btn_articulo">
+
+        <TextView
+            android:text="X CANCELAR"
+            android:layout_width="wrap_content"
+            android:textColor="#FFFFFF"
+
+            android:textSize="25dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCancelar" />
+
+        <TextView
+            android:text="GUARDAR"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/btnGuardar" />
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Código barras"
+        android:ems="6"
+        android:layout_below="@id/rl_btn_articulo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp"
+        android:id="@+id/fieldBarcode" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Artículo"
+        android:ems="14"
+        android:layout_below="@id/rl_btn_articulo"
+        android:layout_toRightOf="@id/fieldBarcode"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="11dp"
+        android:id="@+id/fieldArticulo" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rl_article_detail"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="5dp"
+        android:layout_below="@id/fieldArticulo">
+        <TextView
+            android:id="@+id/titleCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cantidad"/>
+
+
+        <ImageView
+            app:srcCompat="@drawable/ic_remove_circle_outline_black"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btnMinus"
+            android:layout_below="@id/titleCantidad" />
+
+        <ImageView
+            app:srcCompat="@drawable/ic_add_circle_outline_black"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@id/btnMinus"
+            android:layout_below="@id/titleCantidad"
+            android:id="@+id/btnPlus" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:inputType="number"
+            android:scrollHorizontally="false"
+            android:ems="2"
+            android:maxLines="1"
+            android:hint="1"
+            android:layout_below="@id/titleCantidad"
+            android:layout_toRightOf="@id/btnPlus"
+            android:id="@+id/fieldCantidad" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/fieldCantidad"
+            android:layout_below="@id/titleCantidad"
+            android:id="@+id/fieldUnit" />
+
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_article_detail"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/rl_category_detail">
+
+        <TextView
+            android:id="@+id/titleCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categoría"/>
+
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleCategory"
+            android:id="@+id/fieldCategory" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgNewCategory"
+            android:layout_toRightOf="@id/fieldCategory"
+            android:layout_below="@id/titleCategory"
+            app:srcCompat="@drawable/ic_editar" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_category_detail"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/rl_tienda_detail">
+
+        <TextView
+            android:id="@+id/titleTienda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tienda"/>
+
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleTienda"
+            android:id="@+id/fieldTienda" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgNewTienda"
+            android:layout_toRightOf="@id/fieldTienda"
+            android:layout_below="@id/titleTienda"
+            app:srcCompat="@drawable/ic_editar" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_tienda_detail"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/rl_price_detail">
+
+        <TextView
+            android:id="@+id/titlePrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Precio por Unidad"/>
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="0,00"
+            android:layout_below="@id/titlePrice"
+            android:id="@+id/fieldPrice" />
+
+        <TextView
+            android:id="@+id/titleEuros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/fieldPrice"
+            android:layout_below="@id/titlePrice"
+            android:layout_alignBaseline="@id/fieldPrice"
+            android:text="€"/>
+
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="5dp"
+        android:hint="Notas"
+        android:layout_below="@id/rl_price_detail"
+        android:id="@+id/fieldNotes" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id= "@+id/fieldIdLIstaCompra"
+        android:visibility="gone"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id= "@+id/fieldIdArticulo"
+        android:visibility="gone"/>
+
+
+</RelativeLayout>
