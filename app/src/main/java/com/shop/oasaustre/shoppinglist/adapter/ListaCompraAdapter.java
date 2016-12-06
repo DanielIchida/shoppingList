@@ -15,11 +15,7 @@ import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
-import java.util.Vector;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by AsaustreGarO on 24/11/2016.
@@ -60,14 +56,14 @@ public class ListaCompraAdapter extends RecyclerView.Adapter<ListaCompraAdapter.
         if(listaCompra.getPrecio() != null && listaCompra.getUnidades() != null){
             holder.getPrecio().setText(Double.valueOf(listaCompra.getPrecio() * listaCompra.getUnidades()).toString() + AppConstant.EURO) ;
         }else if(listaCompra.getPrecio() != null){
-            holder.getPrecio().setText(listaCompra.getPrecio().toString());
+            holder.getPrecio().setText(listaCompra.getPrecio().toString() + AppConstant.EURO);
         }else{
             holder.getCantidad().setText(AppConstant.BLANK);
         }
 
 
         if (i % 2 == 0) {
-            holder.getLayout().setBackground(context.getResources().getDrawable(R.drawable.line_divider));
+            holder.getLayout().setBackground(context.getResources().getDrawable(R.drawable.line_divider_even));
         } else {
             holder.getLayout().setBackground(context.getResources().getDrawable(R.drawable.line_divider_odd));
         }

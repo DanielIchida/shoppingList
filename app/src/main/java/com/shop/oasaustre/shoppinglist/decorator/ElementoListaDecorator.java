@@ -1,16 +1,10 @@
 package com.shop.oasaustre.shoppinglist.decorator;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.shop.oasaustre.shoppinglist.R;
 
@@ -22,7 +16,7 @@ public class ElementoListaDecorator extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 
     public ElementoListaDecorator(Context context) {
-        mDivider = context.getResources().getDrawable(R.drawable.line_divider);
+        mDivider = context.getResources().getDrawable(R.drawable.line_divider_even);
     }
 
     @Override

@@ -93,6 +93,10 @@ public class InitActivity extends AppCompatActivity
             return true;
         }else if(id == R.id.action_lista){
             createLista();
+        }else if(id == R.id.action_categorias){
+            navCategorias();
+        }else if(id == R.id.action_tiendas){
+            navTiendas();
         }
 
 
@@ -127,8 +131,18 @@ public class InitActivity extends AppCompatActivity
 
     private void createLista(){
         ListDialog listDialog = new ListDialog();
-        listDialog.show(getSupportFragmentManager(), "SimpleDialog");
+        listDialog.show(getSupportFragmentManager(), "Nueva Lista");
 
+    }
+
+    private void navCategorias(){
+        Intent intent = new Intent(this,CategoriaActivity.class);
+        startActivity(intent);
+    }
+
+    private void navTiendas(){
+        Intent intent = new Intent(this,TiendaActivity.class);
+        startActivity(intent);
     }
 
 

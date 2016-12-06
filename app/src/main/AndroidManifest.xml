@@ -20,7 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ArticleSaveActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
+        <activity
+            android:name=".activity.ArticleSaveActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".activity.CategoriaActivity"
+            android:label="@string/title_activity_categoria"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.TiendaActivity"
+            android:label="@string/title_activity_tienda"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

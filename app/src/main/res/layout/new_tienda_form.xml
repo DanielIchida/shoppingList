@@ -7,25 +7,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="Nueva Lista"
-        android:id="@+id/fieldNewList" />
-
+        android:hint="Nueva Tienda"
+            android:id="@+id/fieldNewTienda" />
 
     <Button
         android:text="Cancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fieldNewList"
+        android:layout_below="@id/fieldNewTienda"
         android:layout_alignParentRight="true"
-        android:id="@+id/btnNewCancel" />
+        android:id="@+id/btnNewTiendaCancel" />
 
     <Button
         android:text="Guardar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fieldNewList"
-        android:layout_toLeftOf="@id/btnNewCancel"
-        android:id="@+id/btnNewSave" />
+        android:layout_below="@id/fieldNewTienda"
+        android:layout_toLeftOf="@id/btnNewTiendaCancel"
+        android:id="@+id/btnNewTiendaSave" />
 
 
 </RelativeLayout>

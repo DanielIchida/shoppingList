@@ -14,56 +14,57 @@ import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.ArticleSaveActivity;
+import com.shop.oasaustre.shoppinglist.adapter.CategoriaAdapter;
 import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
+import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
 import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
+import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
+import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
 import com.shop.oasaustre.shoppinglist.db.service.ListaCompraService;
 import com.shop.oasaustre.shoppinglist.dto.ListaCompraDto;
+
+import java.util.List;
 
 /**
  * Created by oasaustre on 3/12/16.
  */
 
-public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> {
+public class LoadCategoriesTask extends AsyncTask<Void,Void,List<Categoria>> {
 
     private Activity activity = null;
-    private ListaCompraAdapter adapter = null;
+    private CategoriaAdapter adapter = null;
 
-    public LoadArticlesTask(Activity activity){
+    public LoadCategoriesTask(Activity activity){
         this.activity = activity;
     }
     @Override
-    protected ListaCompraDto doInBackground(Void... voids) {
-        ListaCompraDto listaCompraDto = null;
-        ListaCompraService listaCompraService = null;
-        Lista listaActive = null;
+    protected List<Categoria> doInBackground(Void... voids) {
+        CategoriaService categoriaService = null;
+        List<Categoria> lstCategoria = null;
 
 
         try {
-            listaCompraDto = new ListaCompraDto();
-            listaCompraService = new ListaCompraService((App) activity.getApplication());
+            categoriaService = new CategoriaService((App) activity.getApplication());
 
-            listaActive = ((App) activity.getApplication()).getListaActive();
-
-
-            listaCompraDto = listaCompraService.loadListaCompraActive(listaActive.getId());
+            lstCategoria = categoriaService.loadAll();
 
         }catch(Exception ex){
-                Log.e(this.getClass().getName(),"Error al obtener la lista de la compra activa");
+                Log.e(this.getClass().getName(),"Error al obtener la lista de categorías");
             }
 
-        return listaCompraDto;
+        return lstCategoria;
     }
 
     @Override
-    protected void onPostExecute(ListaCompraDto listaCompraDto) {
+    protected void onPostExecute(List<Categoria> lstCategoria) {
 
         DividerItemDecoration did = new DividerItemDecoration(activity,DividerItemDecoration.VERTICAL);
 
-        adapter = new ListaCompraAdapter(activity, listaCompraDto.getLstCompra());
+        adapter = new CategoriaAdapter(activity, lstCategoria);
 
         adapter.setOnClickListener(new View.OnClickListener(){
 
@@ -80,29 +81,11 @@ public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> {
             }
         });
 
-        RecyclerView rvListaCompra = (RecyclerView) activity.findViewById(R.id.rv_listaCompraActual);
-        rvListaCompra.addItemDecoration(did);
-        rvListaCompra.setAdapter(adapter);
+        RecyclerView rvCategoria = (RecyclerView) activity.findViewById(R.id.rv_categoriaList);
+        rvCategoria.addItemDecoration(did);
+        rvCategoria.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
-        rvListaCompra.setLayoutManager(layoutManager);
+        rvCategoria.setLayoutManager(layoutManager);
 
-
-        ArrayAdapter<Articulo> adapterText = new ArrayAdapter<Articulo>(activity,
-                android.R.layout.simple_spinner_dropdown_item, listaCompraDto.getAllArticles());
-
-        AutoCompleteTextView textView = (AutoCompleteTextView) activity.findViewById(R.id.txtBuscarArticulo);
-
-        // Numero de caracteres necesarios para que se empiece
-        // a mostrar la lista
-        textView.setThreshold(AppConstant.MIN_CHAR_ACTIVE_FIND);
-
-        // Se establece el Adapter
-        textView.setAdapter(adapterText);
-
-        TextView txtTotalArticle = (TextView) activity.findViewById(R.id.txtTotalArticle);
-        TextView txtTotalPrice = (TextView) activity.findViewById(R.id.txtTotalPrice);
-
-        txtTotalArticle.setText(listaCompraDto.getTotalUnidades().toString());
-        txtTotalPrice.setText(listaCompraDto.getSumTotalListaCompra().toString() + "€");
     }
 }

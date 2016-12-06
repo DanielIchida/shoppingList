@@ -120,19 +120,19 @@ public class ArticleSaveActivity extends AppCompatActivity {
             articulo.setNombre(fieldArticulo.getText().toString());
         }
 
-        if(fieldCantidad.getText() != null){
+        if(fieldCantidad.getText() != null && !fieldCantidad.getText().toString().equals(AppConstant.BLANK)){
             listaCompra.setUnidades(new Long(fieldCantidad.getText().toString()));
         }else{
             listaCompra.setUnidades(null);
         }
 
-        if(fieldPrice.getText() != null){
+        if(fieldPrice.getText() != null && !fieldPrice.getText().toString().equals(AppConstant.BLANK)){
             listaCompra.setPrecio(new Double(fieldPrice.getText().toString()));
         }else{
             listaCompra.setPrecio(null);
         }
 
-        if(fieldNotes.getText() != null){
+        if(fieldNotes.getText() != null && !fieldNotes.getText().toString().equals(AppConstant.BLANK)){
             listaCompra.setNotas(fieldNotes.getText().toString());
         }else{
             listaCompra.setNotas(null);

@@ -9,6 +9,18 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_categorias"
+        android:orderInCategory="60"
+        android:title="Administrar categorías"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_tiendas"
+        android:orderInCategory="70"
+        android:title="Administrar Tiendas"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
