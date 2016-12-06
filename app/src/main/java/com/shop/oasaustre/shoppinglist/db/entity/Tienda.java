@@ -104,6 +104,13 @@ public class Tienda {
         this.direccion = direccion;
     }
 
+
+    @Override
+    public String toString(){
+        return nombre;
+    }
+
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.

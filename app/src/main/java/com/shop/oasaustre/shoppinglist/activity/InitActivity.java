@@ -62,6 +62,8 @@ public class InitActivity extends AppCompatActivity
 
         initializeTextFind();
         initializeUI();
+
+        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -97,6 +99,8 @@ public class InitActivity extends AppCompatActivity
             navCategorias();
         }else if(id == R.id.action_tiendas){
             navTiendas();
+        }else if(id == R.id.action_admin_lista){
+            navListas();
         }
 
 
@@ -142,6 +146,11 @@ public class InitActivity extends AppCompatActivity
 
     private void navTiendas(){
         Intent intent = new Intent(this,TiendaActivity.class);
+        startActivity(intent);
+    }
+
+    private void navListas(){
+        Intent intent = new Intent(this,ListaActivity.class);
         startActivity(intent);
     }
 

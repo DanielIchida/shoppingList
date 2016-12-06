@@ -92,7 +92,7 @@ public class ListaCompraAdapter extends RecyclerView.Adapter<ListaCompraAdapter.
 
         ViewHolder(View itemView) {
             super(itemView);
-            layout = (RelativeLayout) itemView.findViewById(R.id.rl_element_lista);
+            layout = (RelativeLayout) itemView.findViewById(R.id.rl_element_listaCompra);
             chkSelect = (CheckBox) itemView.findViewById(R.id.chkArticulo);
             titulo = (TextView)itemView.findViewById(R.id.txtArticulo);
             icono = (ImageView)itemView.findViewById(R.id.imgEditar);

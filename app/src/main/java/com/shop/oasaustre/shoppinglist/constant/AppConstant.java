@@ -13,5 +13,11 @@ public class AppConstant {
     public static final Integer OP_PLUS = 2;
     public static final String ACTIVITY_RESULT = "activity_result";
     public static final String EURO = "€";
+    public static final String TITLE_CATEGORY_DEFAULT = "Sin Categoría";
+    public static final String TITLE_TIENDA_DEFAULT = "Sin Especificar";
+    public static final Long ID_DEFAULT = -1l;
+    public static final Integer POSITION_DEFAULT = 0;
+    public static final String LIST_FORMAT_DATE = "dd/MM/yyyy";
+
 
 }

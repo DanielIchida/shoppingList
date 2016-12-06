@@ -5,17 +5,25 @@ import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
+import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.dao.ArticuloDao;
+import com.shop.oasaustre.shoppinglist.db.dao.CategoriaDao;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
+import com.shop.oasaustre.shoppinglist.db.dao.TiendaDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
+import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
+import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
+import com.shop.oasaustre.shoppinglist.dto.ArticuloDetalleDto;
 import com.shop.oasaustre.shoppinglist.dto.ListaCompraDto;
 
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -172,6 +180,83 @@ public class ListaCompraService {
         }
 
         return listaCompraDto;
+    }
+
+    public ArticuloDetalleDto getArticleDetail(Long idListaCompra){
+
+        ArticuloDetalleDto articuloDetalleDto = null;
+        ListaCompraDao listaCompraDao = null;
+        CategoriaDao categoriaDao = null;
+        TiendaDao tiendaDao = null;
+        ListaCompra listaCompra = null;
+        List<Categoria> allCategoria = null;
+        List<Tienda> allTienda = null;
+        List<Categoria> lstCategoria = null;
+        List<Tienda> lstTienda = null;
+        Categoria categoriaDefault = null;
+        Tienda tiendaDefault = null;
+
+
+        DaoSession daoSession = app.getDaoSession();
+
+        articuloDetalleDto = new ArticuloDetalleDto();
+
+        categoriaDefault = new Categoria();
+        categoriaDefault.setId(AppConstant.ID_DEFAULT);
+        categoriaDefault.setNombre(AppConstant.TITLE_CATEGORY_DEFAULT);
+
+        tiendaDefault = new Tienda();
+        tiendaDefault.setId(AppConstant.ID_DEFAULT);
+        tiendaDefault.setNombre(AppConstant.TITLE_TIENDA_DEFAULT);
+
+
+        allCategoria = new ArrayList<Categoria>();
+        allCategoria.add(categoriaDefault);
+
+        allTienda = new ArrayList<Tienda>();
+        allTienda.add(tiendaDefault);
+
+        try{
+            daoSession.getDatabase().beginTransaction();
+
+            if (idListaCompra != null) {
+                listaCompraDao = daoSession.getListaCompraDao();
+                categoriaDao = daoSession.getCategoriaDao();
+                tiendaDao = daoSession.getTiendaDao();
+
+                listaCompra = listaCompraDao.load(idListaCompra);
+
+                if(listaCompra.getCategoria() != null){
+
+                }
+
+                lstCategoria = categoriaDao.loadAll();
+                lstTienda = tiendaDao.loadAll();
+
+                if(lstCategoria != null && lstCategoria.size() > 0){
+                    allCategoria.addAll(lstCategoria);
+                }
+
+                if(lstTienda != null && lstTienda.size() > 0){
+                    allTienda.addAll(lstTienda);
+                }
+
+            }
+
+            articuloDetalleDto.setListaCompra(listaCompra);
+            articuloDetalleDto.setAllCategorias(allCategoria);
+            articuloDetalleDto.setAllTiendas(allTienda);
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        }catch(Exception ex){
+            Log.e(this.getClass().getName(),"No se ha podido recuperar la lista de la compra con id "+listaCompra.getId());
+        }finally {
+            daoSession.getDatabase().endTransaction();
+        }
+
+        return articuloDetalleDto;
+
     }
 
     /*private void copyListaCompra(ListaCompra source, ListaCompra target){

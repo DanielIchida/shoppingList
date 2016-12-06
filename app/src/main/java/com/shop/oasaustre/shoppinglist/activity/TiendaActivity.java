@@ -39,6 +39,8 @@ public class TiendaActivity extends AppCompatActivity {
         LoadTiendasTask loadTiendasTask = new LoadTiendasTask(this);
         loadTiendasTask.execute();
 
+        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+
     }
 
 

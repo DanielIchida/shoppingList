@@ -16,8 +16,10 @@ import com.shop.oasaustre.shoppinglist.activity.task.UpdateArticleDetailTask;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
+import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
+import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
 
 public class ArticleSaveActivity extends AppCompatActivity {
 
@@ -35,16 +37,27 @@ public class ArticleSaveActivity extends AppCompatActivity {
 
         initializeUI();
 
+        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+
 
     }
 
     private void initializeUI(){
 
         TextView btnGuardar = (TextView) findViewById(R.id.btnGuardar);
+        TextView btnCancelar = (TextView) findViewById(R.id.btnCancelar);
+
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 updateArticleInShoppingList();
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
@@ -92,6 +105,9 @@ public class ArticleSaveActivity extends AppCompatActivity {
     }
 
     private void updateArticleInShoppingList(){
+        Categoria categoria = null;
+        Tienda tienda = null;
+
         EditText fieldBarcode = (EditText) this.findViewById(R.id.fieldBarcode);
         EditText fieldArticulo = (EditText) this.findViewById(R.id.fieldArticulo);
         EditText fieldCantidad = (EditText) this.findViewById(R.id.fieldCantidad);
@@ -140,6 +156,18 @@ public class ArticleSaveActivity extends AppCompatActivity {
 
         listaCompra.setArticulo(articulo);
         listaCompra.setLista(lista);
+
+        categoria = (Categoria) fieldCategory.getSelectedItem();
+
+        if(categoria != null && categoria.getId() != AppConstant.ID_DEFAULT){
+            listaCompra.setCategoria(categoria);
+        }
+
+        tienda = (Tienda) fieldTienda.getSelectedItem();
+
+        if(tienda != null && tienda.getId() != AppConstant.ID_DEFAULT){
+            listaCompra.setTienda(tienda);
+        }
 
         UpdateArticleDetailTask updateArticleDetailTask = new UpdateArticleDetailTask(this);
         updateArticleDetailTask.execute(listaCompra);

@@ -21,8 +21,18 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_admin_lista"
+        android:orderInCategory="80"
+        android:title="Administrar Listas"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Configuración"
         app:showAsAction="never" />
+
+
+
+
 </menu>

@@ -1,6 +1,8 @@
 package com.shop.oasaustre.shoppinglist.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -8,15 +10,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.activity.dialog.CategoriaDialog;
-import com.shop.oasaustre.shoppinglist.activity.task.LoadCategoriesTask;
+import com.shop.oasaustre.shoppinglist.activity.dialog.ListDialog;
+import com.shop.oasaustre.shoppinglist.activity.dialog.TiendaDialog;
+import com.shop.oasaustre.shoppinglist.activity.task.LoadListasTask;
+import com.shop.oasaustre.shoppinglist.activity.task.LoadTiendasTask;
 
-public class CategoriaActivity extends AppCompatActivity {
+public class ListaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categoria);
+        setContentView(R.layout.activity_lista);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -33,26 +37,24 @@ public class CategoriaActivity extends AppCompatActivity {
 
         initializeUI();
 
-        LoadCategoriesTask loadCategoriesTask = new LoadCategoriesTask(this);
-        loadCategoriesTask.execute();
-
-        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+        LoadListasTask loadListasTask = new LoadListasTask(this);
+        loadListasTask.execute();
     }
 
     private void initializeUI(){
-        TextView btnNewCategory = (TextView) findViewById(R.id.btnNewCategory);
-        btnNewCategory.setOnClickListener(new View.OnClickListener(){
+        TextView btnNewLista = (TextView) findViewById(R.id.btnNewLista);
+        btnNewLista.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
-                createCategoria();
+                createLista();
             }
         });
     }
 
-    private void createCategoria(){
-        CategoriaDialog dialog = new CategoriaDialog();
-        dialog.show(getSupportFragmentManager(), "Nueva Categoría");
+    private void createLista(){
+        ListDialog dialog = new ListDialog();
+        dialog.show(getSupportFragmentManager(), "Nueva Lista");
     }
 
 
