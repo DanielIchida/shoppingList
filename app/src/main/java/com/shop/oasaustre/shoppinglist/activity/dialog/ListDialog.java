@@ -68,7 +68,7 @@ public class ListDialog extends DialogFragment {
     private void createNewList(EditText fieldNewList){
 
         if(fieldNewList.getText().length() > 0){
-            NewListTask newListTask = new NewListTask(getActivity(),this);
+            NewListTask newListTask = new NewListTask(getActivity(),this,true);
             newListTask.execute(fieldNewList.getText().toString());
         }else{
             Toast.makeText(getActivity(),"El campo de texto está vacío",Toast.LENGTH_LONG);

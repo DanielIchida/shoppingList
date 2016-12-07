@@ -73,7 +73,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
 
         ViewHolder(View itemView) {
             super(itemView);
-            layout = (RelativeLayout) itemView.findViewById(R.id.rl_element_tienda);
+            layout = (RelativeLayout) itemView.findViewById(R.id.rl_element_categoria);
             tituloCategoria = (TextView)itemView.findViewById(R.id.txtCategoria);
             idCategoria = (TextView)itemView.findViewById(R.id.txtIdCategoria);
             iconoDel = (ImageView)itemView.findViewById(R.id.imgDeleteCategoria);

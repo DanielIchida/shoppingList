@@ -259,6 +259,28 @@ public class ListaCompraService {
 
     }
 
+
+    public boolean deleteArticlesInListaCompra(List<Long> selectedItems){
+        boolean result = true;
+        DaoSession daoSession = app.getDaoSession();
+
+        try{
+            daoSession.getDatabase().beginTransaction();
+
+            daoSession.getListaCompraDao().deleteByKeyInTx(selectedItems);
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        }catch(Exception ex){
+            Log.e(this.getClass().getName(),"No se ha podido borrar los artículos de la lista de la compra "+selectedItems+ "- "+ex);
+            result = false;
+        }finally {
+            daoSession.getDatabase().endTransaction();
+        }
+
+        return result;
+    }
+
     /*private void copyListaCompra(ListaCompra source, ListaCompra target){
 
         target.setPrecio(source.getPrecio());

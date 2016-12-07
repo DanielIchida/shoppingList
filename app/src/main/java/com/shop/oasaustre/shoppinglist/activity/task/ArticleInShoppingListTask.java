@@ -37,10 +37,10 @@ public class ArticleInShoppingListTask  extends AsyncTask<String,Void,ListaCompr
     protected void onPostExecute(ListaCompra listaCompra) {
         RecyclerView rv = (RecyclerView) activity.findViewById(R.id.rv_listaCompraActual);
         ListaCompraAdapter adapter = (ListaCompraAdapter) rv.getAdapter();
-        adapter.getLista().add(listaCompra);
-        adapter.notifyDataSetChanged();
+        adapter.addItem(listaCompra);
         TextView txtTotalArticle = (TextView) activity.findViewById(R.id.txtTotalArticle);
         txtTotalArticle.setText(String.valueOf(adapter.getItemCount()));
+        //TODO: Falta actualizar el total del precio
 
 
     }

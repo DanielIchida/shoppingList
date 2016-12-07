@@ -92,6 +92,45 @@ public class ListaService {
         }
     }
 
+    public void saveAndChangeLista(Lista lista) {
+
+        ListaDao listaDao = null;
+        WhereCondition.StringCondition condition = null;
+        Query query = null;
+        List<Lista> lstLista = null;
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+            condition = new WhereCondition.StringCondition("upper(nombre) = trim(upper('" + lista.getNombre() + "'))");
+
+            listaDao = daoSession.getListaDao();
+
+            query = listaDao.queryBuilder().where(condition).build();
+
+            lstLista = query.list();
+
+            if(lstLista != null && lstLista.size() > 0){
+
+            }else{
+                listaDao.insert(lista);
+                daoSession.getDatabase().rawQuery("UPDATE LISTA SET ACTIVO = 0 " +
+                        "WHERE ID <> ?",new String[]{lista.getId().toString()});
+            }
+
+
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido guardar la lista:"+ ex);
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
+    }
+
 
 }
 

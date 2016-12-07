@@ -70,14 +70,7 @@ public class LoadCategoriesTask extends AsyncTask<Void,Void,List<Categoria>> {
 
             @Override
             public void onClick(View view) {
-
-                int positionItemSelect = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
-                ListaCompra listaCompra = ((ListaCompraAdapter)((RecyclerView) view.getParent()).
-                        getAdapter()).getLista().get(positionItemSelect);
-
-                Intent i = new Intent(activity,ArticleSaveActivity.class);
-                i.putExtra("idListaCompra",listaCompra.getId());
-                activity.startActivityForResult(i,AppConstant.RES_UPDATE_ARTICLE);
+            //TODO: Hay que implementarlo
             }
         });
 

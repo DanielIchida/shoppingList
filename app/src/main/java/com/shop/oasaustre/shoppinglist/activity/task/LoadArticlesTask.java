@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.ArticleSaveActivity;
 import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
+import com.shop.oasaustre.shoppinglist.adapter.item.ContentItem;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
@@ -71,8 +72,11 @@ public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> {
             public void onClick(View view) {
 
                 int positionItemSelect = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
-                ListaCompra listaCompra = ((ListaCompraAdapter)((RecyclerView) view.getParent()).
-                        getAdapter()).getLista().get(positionItemSelect);
+                ListaCompraAdapter adapter = (ListaCompraAdapter)((RecyclerView) view.getParent()).getAdapter();
+                ListaCompra listaCompra = ((ContentItem) adapter.getLista().get(positionItemSelect)).getListaCompra();
+
+                /*ListaCompra listaCompra = ((ListaCompraAdapter)((RecyclerView) view.getParent()).
+                        getAdapter()).getLista().get(positionItemSelect);*/
 
                 Intent i = new Intent(activity,ArticleSaveActivity.class);
                 i.putExtra("idListaCompra",listaCompra.getId());

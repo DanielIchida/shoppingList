@@ -8,4 +8,8 @@
     <string name="title_activity_categoria">CategoriaActivity</string>
     <string name="title_activity_tienda">TiendaActivity</string>
     <string name="title_activity_lista">ListaActivity</string>
+
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="deleteArticles">¿Estás seguro que deseas eliminar los artículos seleccionados?</string>
 </resources>

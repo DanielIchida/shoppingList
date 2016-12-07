@@ -12,6 +12,7 @@ import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
+import com.shop.oasaustre.shoppinglist.db.service.ListaService;
 
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;
@@ -27,40 +28,33 @@ public class NewListTask extends AsyncTask<String, Void,Void> {
     private Activity activity;
     private String errors;
     private ListDialog listDialog;
+    private boolean activo;
 
-    public NewListTask(Activity activity,ListDialog listDialog){
+    public NewListTask(Activity activity,ListDialog listDialog,boolean activo){
         this.activity = listDialog.getActivity();
         this.listDialog = listDialog;
+        this.activo = activo;
     }
     @Override
     protected Void doInBackground(String... strings) {
 
         DaoSession daoSession = null;
+        ListaService listaService = null;
+        Lista newList = null;
 
         try {
+            listaService = new ListaService((App) activity.getApplication());
 
-            daoSession = ((App) activity.getApplication()).getDaoSession();
-            daoSession.getDatabase().beginTransaction();
+            newList = new Lista();
+            newList.setActivo(1l);
+            newList.setFecha(System.currentTimeMillis());
+            newList.setNombre(strings[0]);
 
-
-            if (strings[0] != null && !strings[0].equals("")) {
-                WhereCondition.StringCondition condition = new WhereCondition.StringCondition("upper(nombre) = trim(upper('" + strings[0] + "'))");
-                ListaDao listaDao = daoSession.getListaDao();
-                Query query = listaDao.queryBuilder().where(condition).build();
-                List<Lista> lista = query.list();
-                if (lista != null && lista.size() > 0) {
-                    errors = "Ya existe una lista registrada con ese nombre.";
-                } else {
-                    Lista newList = new Lista();
-                    newList.setActivo(1l);
-                    newList.setFecha(System.currentTimeMillis());
-                    newList.setNombre(strings[0]);
-                    listaDao.insert(newList);
-                }
-
+            if(activo){
+                listaService.saveAndChangeLista(newList);
+            }else{
+                listaService.saveLista(newList);
             }
-
-            daoSession.getDatabase().setTransactionSuccessful();
 
         }catch(Exception ex){
 
@@ -75,6 +69,7 @@ public class NewListTask extends AsyncTask<String, Void,Void> {
 
     @Override
     protected void onPostExecute(Void v) {
+        //TODO Falta contemplar todos los casos
         if(errors != null){
 
             Toast.makeText(activity,errors,Toast.LENGTH_LONG);

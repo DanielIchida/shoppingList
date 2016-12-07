@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.shop.oasaustre.shoppinglist.R;
+import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteArticlesDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.ListDialog;
 import com.shop.oasaustre.shoppinglist.activity.task.ArticleInShoppingListTask;
 import com.shop.oasaustre.shoppinglist.activity.task.LoadArticlesTask;
@@ -39,14 +40,7 @@ public class InitActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -204,6 +198,7 @@ public class InitActivity extends AppCompatActivity
         ImageView imgEditar = (ImageView) findViewById(R.id.imgEditar);
         ImageView imgDone = (ImageView) findViewById(R.id.imgDone);
         ImageView imgClear = (ImageView) findViewById(R.id.imgClear);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.deleteArticleFloat);
 
         imgBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,9 +235,15 @@ public class InitActivity extends AppCompatActivity
                 ArticleInShoppingListTask task = new ArticleInShoppingListTask(InitActivity.this);
                 task.execute(textFind.getText().toString());
                 textFind.setText(AppConstant.BLANK);
+            }
+        });
 
 
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DeleteArticlesDialog dialog = new DeleteArticlesDialog();
+                dialog.show(getSupportFragmentManager(), "Eliminar Artículos");
             }
         });
 

@@ -1,6 +1,7 @@
 package com.shop.oasaustre.shoppinglist.app;
 
 import android.app.Application;
+import android.content.ContextWrapper;
 
 import com.shop.oasaustre.shoppinglist.db.dao.DaoMaster;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
@@ -100,7 +101,9 @@ public class App extends Application {
         InputStream myInput = this.getAssets().open(dbname);
         // Path to the just created empty db
         File outFileName = getDatabasePath(dbname);
+
         if(!outFileName.exists()) {
+            outFileName.getParentFile().mkdirs();
             // Open the empty db as the output stream
             OutputStream myOutput = new FileOutputStream(outFileName);
             // transfer bytes from the inputfile to the outputfile

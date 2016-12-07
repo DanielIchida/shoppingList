@@ -92,6 +92,7 @@ public class ArticleDetailTask  extends AsyncTask<Long,Void,ArticuloDetalleDto> 
         if(categoria != null){
             posItemSelected = categoriaAdapter.getPosition(categoria);
             fieldCategory.setSelection(posItemSelected);
+
         }else{
             fieldCategory.setSelection(AppConstant.POSITION_DEFAULT);
         }
@@ -108,7 +109,7 @@ public class ArticleDetailTask  extends AsyncTask<Long,Void,ArticuloDetalleDto> 
             posItemSelected = tiendaAdapter.getPosition(tienda);
             fieldTienda.setSelection(posItemSelected);
         }else{
-            fieldCategory.setSelection(AppConstant.POSITION_DEFAULT);
+            fieldTienda.setSelection(AppConstant.POSITION_DEFAULT);
         }
 
 
