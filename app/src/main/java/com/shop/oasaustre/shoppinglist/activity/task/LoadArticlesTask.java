@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.ArticleSaveActivity;
+import com.shop.oasaustre.shoppinglist.activity.InitActivity;
 import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.adapter.item.ContentItem;
 import com.shop.oasaustre.shoppinglist.app.App;
@@ -63,6 +64,10 @@ public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> {
     protected void onPostExecute(ListaCompraDto listaCompraDto) {
 
         DividerItemDecoration did = new DividerItemDecoration(activity,DividerItemDecoration.VERTICAL);
+
+        Lista listaActive = ((App) activity.getApplication()).getListaActive();
+
+        ((InitActivity)activity).getSupportActionBar().setTitle(listaActive.getNombre());
 
         adapter = new ListaCompraAdapter(activity, listaCompraDto.getLstCompra());
 

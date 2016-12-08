@@ -54,6 +54,7 @@ public class ListaActivity extends AppCompatActivity {
 
     private void createLista(){
         ListDialog dialog = new ListDialog();
+        dialog.setActivo(false);
         dialog.show(getSupportFragmentManager(), "Nueva Lista");
     }
 

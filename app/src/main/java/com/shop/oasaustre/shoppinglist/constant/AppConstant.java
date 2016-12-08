@@ -18,6 +18,9 @@ public class AppConstant {
     public static final Long ID_DEFAULT = -1l;
     public static final Integer POSITION_DEFAULT = 0;
     public static final String LIST_FORMAT_DATE = "dd/MM/yyyy";
+    public static final Long LISTA_ACTIVA = 1l;
+    public static final Long LISTA_INACTIVA = 0l;
+    public static final Integer CAMERA_PERMISSION = 5;
 
 
 }

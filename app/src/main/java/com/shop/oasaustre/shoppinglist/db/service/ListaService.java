@@ -3,11 +3,13 @@ package com.shop.oasaustre.shoppinglist.db.service;
 import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.app.App;
+import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
 import com.shop.oasaustre.shoppinglist.db.dao.TiendaDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
+import com.shop.oasaustre.shoppinglist.dto.ListaActivaDto;
 
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;
@@ -117,7 +119,7 @@ public class ListaService {
             }else{
                 listaDao.insert(lista);
                 daoSession.getDatabase().rawQuery("UPDATE LISTA SET ACTIVO = 0 " +
-                        "WHERE ID <> ?",new String[]{lista.getId().toString()});
+                        "WHERE ID <> ?",new String[]{lista.getId().toString()}).moveToFirst();
             }
 
 
@@ -129,6 +131,43 @@ public class ListaService {
         } finally {
             daoSession.getDatabase().endTransaction();
         }
+    }
+
+
+    public ListaActivaDto setListaActiva(Lista lista) {
+
+        ListaDao listaDao = null;
+        List<Lista> lstLista = null;
+        ListaActivaDto result = new ListaActivaDto();
+
+        result.setOk(Boolean.TRUE);
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+            listaDao = daoSession.getListaDao();
+
+            lista.setActivo(AppConstant.LISTA_ACTIVA);
+            listaDao.update(lista);
+
+            daoSession.getDatabase().rawQuery("UPDATE LISTA SET ACTIVO = 0 " +
+                    "WHERE ID <> ?",new String[]{lista.getId().toString()}).moveToFirst();
+
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido establecer la lista activa:"+ex);
+            result.setOk(Boolean.FALSE);
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
+
+        result.setListaActiva(lista);
+
+        return result;
     }
 
 

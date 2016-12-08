@@ -121,6 +121,7 @@ public class ListaCompraService {
             daoSession.getDatabase().beginTransaction();
 
             if (listaCompra != null) {
+                daoSession.getArticuloDao().update(listaCompra.getArticulo());
                 //listaCompraBD = daoSession.getListaCompraDao().load(listaCompra.getId());
                 daoSession.getListaCompraDao().update(listaCompra);
 
@@ -280,6 +281,39 @@ public class ListaCompraService {
 
         return result;
     }
+
+
+    public ListaCompra saveListaCompra(Articulo articulo){
+        ListaCompra listaCompra = null;
+        Lista currentList = null;
+        ListaCompraDao listaCompraDao = null;
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try{
+            daoSession.getDatabase().beginTransaction();
+
+            currentList = app.getListaActive();
+
+            listaCompra = new ListaCompra();
+            listaCompra.setArticulo(articulo);
+            listaCompra.setLista(currentList);
+            listaCompraDao = daoSession.getListaCompraDao();
+            listaCompraDao.insert(listaCompra);
+
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        }catch(Exception ex){
+            Log.e(this.getClass().getName(),"No se ha grabar el artículo "+articulo.getNombre()+ " en la lista de la compra "+currentList.getNombre());
+        }finally {
+            daoSession.getDatabase().endTransaction();
+        }
+
+        return listaCompra;
+    }
+
+
 
     /*private void copyListaCompra(ListaCompra source, ListaCompra target){
 

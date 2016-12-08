@@ -1,32 +1,43 @@
 package com.shop.oasaustre.shoppinglist.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteArticlesDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.ListDialog;
 import com.shop.oasaustre.shoppinglist.activity.task.ArticleInShoppingListTask;
+import com.shop.oasaustre.shoppinglist.activity.task.FindBarcodeTask;
 import com.shop.oasaustre.shoppinglist.activity.task.LoadArticlesTask;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,8 +49,6 @@ public class InitActivity extends AppCompatActivity
         setContentView(R.layout.activity_init);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -58,6 +67,8 @@ public class InitActivity extends AppCompatActivity
         initializeUI();
 
         Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+
+
     }
 
     @Override
@@ -87,13 +98,13 @@ public class InitActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }else if(id == R.id.action_lista){
+        } else if (id == R.id.action_lista) {
             createLista();
-        }else if(id == R.id.action_categorias){
+        } else if (id == R.id.action_categorias) {
             navCategorias();
-        }else if(id == R.id.action_tiendas){
+        } else if (id == R.id.action_tiendas) {
             navTiendas();
-        }else if(id == R.id.action_admin_lista){
+        } else if (id == R.id.action_admin_lista) {
             navListas();
         }
 
@@ -127,29 +138,30 @@ public class InitActivity extends AppCompatActivity
     }
 
 
-    private void createLista(){
+    private void createLista() {
         ListDialog listDialog = new ListDialog();
+        listDialog.setActivo(true);
         listDialog.show(getSupportFragmentManager(), "Nueva Lista");
 
     }
 
-    private void navCategorias(){
-        Intent intent = new Intent(this,CategoriaActivity.class);
+    private void navCategorias() {
+        Intent intent = new Intent(this, CategoriaActivity.class);
         startActivity(intent);
     }
 
-    private void navTiendas(){
-        Intent intent = new Intent(this,TiendaActivity.class);
+    private void navTiendas() {
+        Intent intent = new Intent(this, TiendaActivity.class);
         startActivity(intent);
     }
 
-    private void navListas(){
-        Intent intent = new Intent(this,ListaActivity.class);
+    private void navListas() {
+        Intent intent = new Intent(this, ListaActivity.class);
         startActivity(intent);
     }
 
 
-    private void initializeTextFind(){
+    private void initializeTextFind() {
 
         AutoCompleteTextView textFind = (AutoCompleteTextView) findViewById(R.id.txtBuscarArticulo);
         textFind.addTextChangedListener(new TextWatcher() {
@@ -167,14 +179,14 @@ public class InitActivity extends AppCompatActivity
                 ImageView imgDone = (ImageView) findViewById(R.id.imgDone);
                 ImageView imgClear = (ImageView) findViewById(R.id.imgClear);
 
-                if(charSequence != null && charSequence.length() > 0){
+                if (charSequence != null && charSequence.length() > 0) {
                     imgBarcode.setVisibility(View.INVISIBLE);
                     imgHistory.setVisibility(View.INVISIBLE);
                     imgFavorite.setVisibility(View.INVISIBLE);
                     imgEditar.setVisibility(View.VISIBLE);
                     imgDone.setVisibility(View.VISIBLE);
                     imgClear.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     imgBarcode.setVisibility(View.VISIBLE);
                     imgHistory.setVisibility(View.VISIBLE);
                     imgFavorite.setVisibility(View.VISIBLE);
@@ -191,7 +203,7 @@ public class InitActivity extends AppCompatActivity
         });
     }
 
-    private void initializeUI(){
+    private void initializeUI() {
         ImageView imgBarcode = (ImageView) findViewById(R.id.imgBarcode);
         ImageView imgHistory = (ImageView) findViewById(R.id.imgHistory);
         ImageView imgFavorite = (ImageView) findViewById(R.id.imgFavorite);
@@ -203,7 +215,7 @@ public class InitActivity extends AppCompatActivity
         imgBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                initializeScan();
             }
         });
 
@@ -256,25 +268,77 @@ public class InitActivity extends AppCompatActivity
         });
 
 
+    }
 
+    private void initializeScan() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            callBarcodeScan();
+
+        }else {
+            solicitarPermisoCamara();
+        }
+
+    }
+
+
+    private void callBarcodeScan() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        List<String> target = new ArrayList<String>();
+        target.add("com.shop.oasaustre.shoppinglist");
+        integrator.setTargetApplications(target);
+        integrator.initiateScan();
+    }
+
+
+    private void solicitarPermisoCamara() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA},
+                AppConstant.CAMERA_PERMISSION);
 
     }
 
     @Override
-    protected void onActivityResult(int requestCode,int resultCode, Intent data){
-        if(requestCode == AppConstant.RES_UPDATE_ARTICLE && resultCode == RESULT_OK){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AppConstant.RES_UPDATE_ARTICLE && resultCode == RESULT_OK) {
             LoadArticlesTask task = new LoadArticlesTask(this);
             task.execute();
+        }else{
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (scanResult != null) {
+                FindBarcodeTask task = new FindBarcodeTask(this);
+                task.execute(scanResult.getContents());
+            }
         }
     }
 
-    /***** EVENTOS DEL CICLO DE VIDA *****/
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        if (requestCode == AppConstant.CAMERA_PERMISSION) {
+            if (grantResults.length== 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                callBarcodeScan();
+            } else {
+                View view = this.findViewById(R.id.content_init);
+                Snackbar.make(view, "Sin el permiso de acceso a la cámara, no se puede realizar la" +
+                        "acción", Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /*****
+     * EVENTOS DEL CICLO DE VIDA
+     *****/
 
     @Override
     protected void onStart() {
         super.onStart();
         Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -284,21 +348,25 @@ public class InitActivity extends AppCompatActivity
 
         Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     protected void onPause() {
         Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
         super.onPause();
     }
+
     @Override
     protected void onStop() {
         super.onStop();
         Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
         Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

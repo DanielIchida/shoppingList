@@ -16,6 +16,7 @@ import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,8 +29,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
     private List<Lista> lista;
     private Context context;
     private View.OnClickListener onClickListener;
-    long yourmilliseconds = System.currentTimeMillis();
-    SimpleDateFormat dateFormat;
+    private SimpleDateFormat dateFormat;
 
 
     public ListaAdapter(Context context, List<Lista> lista) {
@@ -75,6 +75,14 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
         }
 
         return result;
+    }
+
+    public void addItem(Lista newLista){
+        if(lista == null) {
+            lista = new ArrayList<Lista>();
+        }
+        lista.add(newLista);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

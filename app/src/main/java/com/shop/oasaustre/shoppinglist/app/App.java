@@ -54,6 +54,10 @@ public class App extends Application {
         return listaCompraActive;
     }
 
+    public void setListaActive(Lista lista){
+        this.listaCompraActive = lista;
+    }
+
 
     private void loadShoppingListActive(){
         List<Lista> currentList = null;

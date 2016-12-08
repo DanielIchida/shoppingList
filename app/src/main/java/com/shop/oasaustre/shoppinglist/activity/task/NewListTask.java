@@ -3,12 +3,16 @@ package com.shop.oasaustre.shoppinglist.activity.task;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.dialog.ListDialog;
+import com.shop.oasaustre.shoppinglist.adapter.ListaAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
+import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
@@ -23,10 +27,9 @@ import java.util.List;
  * Created by oasaustre on 3/12/16.
  */
 
-public class NewListTask extends AsyncTask<String, Void,Void> {
+public class NewListTask extends AsyncTask<String, Void,Lista> {
 
     private Activity activity;
-    private String errors;
     private ListDialog listDialog;
     private boolean activo;
 
@@ -36,48 +39,43 @@ public class NewListTask extends AsyncTask<String, Void,Void> {
         this.activo = activo;
     }
     @Override
-    protected Void doInBackground(String... strings) {
+    protected Lista doInBackground(String... strings) {
 
         DaoSession daoSession = null;
         ListaService listaService = null;
         Lista newList = null;
 
-        try {
-            listaService = new ListaService((App) activity.getApplication());
+        listaService = new ListaService((App) activity.getApplication());
 
-            newList = new Lista();
-            newList.setActivo(1l);
-            newList.setFecha(System.currentTimeMillis());
-            newList.setNombre(strings[0]);
+        newList = new Lista();
+        newList.setActivo(AppConstant.LISTA_ACTIVA);
+        newList.setFecha(System.currentTimeMillis());
+        newList.setNombre(strings[0]);
 
-            if(activo){
-                listaService.saveAndChangeLista(newList);
-            }else{
-                listaService.saveLista(newList);
-            }
-
-        }catch(Exception ex){
-
-            Log.e(this.getClass().getName(),"No se ha podido insertar la nueva lista.");
-        }finally {
-            daoSession.getDatabase().endTransaction();
+        if(activo){
+            listaService.saveAndChangeLista(newList);
+        }else{
+            listaService.saveLista(newList);
         }
 
-        return null;
+
+
+        return newList;
     }
 
 
     @Override
-    protected void onPostExecute(Void v) {
-        //TODO Falta contemplar todos los casos
-        if(errors != null){
-
-            Toast.makeText(activity,errors,Toast.LENGTH_LONG);
+    protected void onPostExecute(Lista lista) {
+        if(activo){
+            ((App)activity.getApplication()).setListaActive(lista);
+            LoadArticlesTask task = new LoadArticlesTask(activity);
+            task.execute();
         }else{
-            listDialog.dismiss();
-            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-
+            RecyclerView rv = (RecyclerView) activity.findViewById(R.id.rv_listaList);
+            ListaAdapter listaAdapter = (ListaAdapter) rv.getAdapter();
+            listaAdapter.addItem(lista);
         }
+
+        listDialog.dismiss();
     }
 }

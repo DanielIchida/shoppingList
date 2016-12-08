@@ -20,6 +20,10 @@ import com.shop.oasaustre.shoppinglist.activity.task.NewListTask;
 
 public class ListDialog extends DialogFragment {
 
+
+    private boolean activo;
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -68,10 +72,18 @@ public class ListDialog extends DialogFragment {
     private void createNewList(EditText fieldNewList){
 
         if(fieldNewList.getText().length() > 0){
-            NewListTask newListTask = new NewListTask(getActivity(),this,true);
+            NewListTask newListTask = new NewListTask(getActivity(),this,activo);
             newListTask.execute(fieldNewList.getText().toString());
         }else{
             Toast.makeText(getActivity(),"El campo de texto está vacío",Toast.LENGTH_LONG);
         }
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

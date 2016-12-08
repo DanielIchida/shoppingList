@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
+import com.shop.oasaustre.shoppinglist.adapter.helper.ListaCompraPanelHelper;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
 import com.shop.oasaustre.shoppinglist.db.service.ListaCompraService;
@@ -35,12 +36,7 @@ public class ArticleInShoppingListTask  extends AsyncTask<String,Void,ListaCompr
 
     @Override
     protected void onPostExecute(ListaCompra listaCompra) {
-        RecyclerView rv = (RecyclerView) activity.findViewById(R.id.rv_listaCompraActual);
-        ListaCompraAdapter adapter = (ListaCompraAdapter) rv.getAdapter();
-        adapter.addItem(listaCompra);
-        TextView txtTotalArticle = (TextView) activity.findViewById(R.id.txtTotalArticle);
-        txtTotalArticle.setText(String.valueOf(adapter.getItemCount()));
-        //TODO: Falta actualizar el total del precio
+        ListaCompraPanelHelper.refreshPanel(activity,listaCompra);
 
 
     }
