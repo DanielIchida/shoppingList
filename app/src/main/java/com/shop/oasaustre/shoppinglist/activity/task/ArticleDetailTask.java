@@ -60,7 +60,7 @@ public class ArticleDetailTask  extends AsyncTask<Long,Void,ArticuloDetalleDto> 
         Spinner fieldTienda = (Spinner) activity.findViewById(R.id.fieldTienda);
         EditText fieldPrice = (EditText) activity.findViewById(R.id.fieldPrice);
         EditText fieldNotes = (EditText) activity.findViewById(R.id.fieldNotes);
-        TextView fieldIdLIstaCompra = (TextView) activity.findViewById(R.id.fieldIdLIstaCompra);
+        TextView fieldIdListaCompra = (TextView) activity.findViewById(R.id.fieldIdLIstaCompra);
         TextView fieldIdArticulo = (TextView) activity.findViewById(R.id.fieldIdArticulo);
 
         listaCompra = articuloDetalleDto.getListaCompra();
@@ -75,10 +75,10 @@ public class ArticleDetailTask  extends AsyncTask<Long,Void,ArticuloDetalleDto> 
         }
 
         if(listaCompra != null){
-            fieldCantidad.setText((listaCompra.getUnidades()!=null)?listaCompra.getUnidades().toString():"");
-            fieldPrice.setText((listaCompra.getPrecio()!=null)?listaCompra.getPrecio().toString():"");
+            fieldCantidad.setText((listaCompra.getUnidades()!=null)?listaCompra.getUnidades().toString():AppConstant.BLANK);
+            fieldPrice.setText((listaCompra.getPrecio()!=null)?listaCompra.getPrecio().toString():AppConstant.BLANK);
             fieldNotes.setText(listaCompra.getNotas());
-            fieldIdLIstaCompra.setText(listaCompra.getId().toString());
+            fieldIdListaCompra.setText(listaCompra.getId().toString());
         }
 
         categoriaAdapter = new ArrayAdapter<Categoria>(activity,

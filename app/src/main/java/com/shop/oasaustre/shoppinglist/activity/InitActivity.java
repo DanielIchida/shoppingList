@@ -1,9 +1,11 @@
 package com.shop.oasaustre.shoppinglist.activity;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -29,6 +31,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteArticlesDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.ListDialog;
+import com.shop.oasaustre.shoppinglist.activity.dialog.VoiceResultDialog;
 import com.shop.oasaustre.shoppinglist.activity.task.ArticleInShoppingListTask;
 import com.shop.oasaustre.shoppinglist.activity.task.FindBarcodeTask;
 import com.shop.oasaustre.shoppinglist.activity.task.LoadArticlesTask;
@@ -38,14 +41,18 @@ import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class InitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Boolean voiceRecognition;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        voiceRecognition = Boolean.FALSE;
         setContentView(R.layout.activity_init);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -173,24 +180,18 @@ public class InitActivity extends AppCompatActivity
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 ImageView imgBarcode = (ImageView) findViewById(R.id.imgBarcode);
-                ImageView imgHistory = (ImageView) findViewById(R.id.imgHistory);
-                ImageView imgFavorite = (ImageView) findViewById(R.id.imgFavorite);
-                ImageView imgEditar = (ImageView) findViewById(R.id.imgEditar);
+                ImageView imgVoice = (ImageView) findViewById(R.id.imgVoice);
                 ImageView imgDone = (ImageView) findViewById(R.id.imgDone);
                 ImageView imgClear = (ImageView) findViewById(R.id.imgClear);
 
                 if (charSequence != null && charSequence.length() > 0) {
                     imgBarcode.setVisibility(View.INVISIBLE);
-                    imgHistory.setVisibility(View.INVISIBLE);
-                    imgFavorite.setVisibility(View.INVISIBLE);
-                    imgEditar.setVisibility(View.VISIBLE);
+                    imgVoice.setVisibility(View.INVISIBLE);
                     imgDone.setVisibility(View.VISIBLE);
                     imgClear.setVisibility(View.VISIBLE);
                 } else {
                     imgBarcode.setVisibility(View.VISIBLE);
-                    imgHistory.setVisibility(View.VISIBLE);
-                    imgFavorite.setVisibility(View.VISIBLE);
-                    imgEditar.setVisibility(View.INVISIBLE);
+                    imgVoice.setVisibility(View.VISIBLE);
                     imgDone.setVisibility(View.INVISIBLE);
                     imgClear.setVisibility(View.INVISIBLE);
                 }
@@ -205,9 +206,7 @@ public class InitActivity extends AppCompatActivity
 
     private void initializeUI() {
         ImageView imgBarcode = (ImageView) findViewById(R.id.imgBarcode);
-        ImageView imgHistory = (ImageView) findViewById(R.id.imgHistory);
-        ImageView imgFavorite = (ImageView) findViewById(R.id.imgFavorite);
-        ImageView imgEditar = (ImageView) findViewById(R.id.imgEditar);
+        ImageView imgVoice = (ImageView) findViewById(R.id.imgVoice);
         ImageView imgDone = (ImageView) findViewById(R.id.imgDone);
         ImageView imgClear = (ImageView) findViewById(R.id.imgClear);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.deleteArticleFloat);
@@ -219,26 +218,15 @@ public class InitActivity extends AppCompatActivity
             }
         });
 
-        imgHistory.setOnClickListener(new View.OnClickListener() {
+
+        imgVoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                initializeVoice();
             }
+
         });
 
-        imgFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        imgEditar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         imgDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,10 +251,28 @@ public class InitActivity extends AppCompatActivity
         imgClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AutoCompleteTextView textFind = (AutoCompleteTextView) findViewById(R.id.txtBuscarArticulo);
+                textFind.setText(AppConstant.BLANK);
             }
         });
 
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    private void initializeVoice(){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                "Reconocimiento de voz");
+
+        startActivityForResult(intent, AppConstant.RES_VOICE);
 
     }
 
@@ -304,12 +310,37 @@ public class InitActivity extends AppCompatActivity
         if (requestCode == AppConstant.RES_UPDATE_ARTICLE && resultCode == RESULT_OK) {
             LoadArticlesTask task = new LoadArticlesTask(this);
             task.execute();
-        }else{
+        }else if(requestCode == AppConstant.RES_VOICE){
+            if(resultCode == RESULT_OK && data != null){
+                getResultVoiceWords(data);
+            }else{
+                View view = this.findViewById(R.id.content_init);
+                Snackbar.make(view, "No se ha reconocido ninguna palabras. Inténtalo de nuevo",
+                        Snackbar.LENGTH_LONG).show();
+            }
+        }
+        else{
             IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (scanResult != null) {
                 FindBarcodeTask task = new FindBarcodeTask(this);
                 task.execute(scanResult.getContents());
             }
+        }
+    }
+
+    private void getResultVoiceWords(Intent data){
+        List<String> result = data
+                .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        if(result != null && result.size() > 0){
+            VoiceResultDialog  dialog = new VoiceResultDialog(this);
+            dialog.setWords(result);
+            dialog.show();
+            /*dialog.setWords(result);
+            dialog.show(getSupportFragmentManager(), "Lista Palabras");*/
+        }else{
+            View view = this.findViewById(R.id.content_init);
+            Snackbar.make(view, "No se ha reconocido ninguna palabras. Inténtalo de nuevo",
+                    Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -322,9 +353,7 @@ public class InitActivity extends AppCompatActivity
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 callBarcodeScan();
             } else {
-                View view = this.findViewById(R.id.content_init);
-                Snackbar.make(view, "Sin el permiso de acceso a la cámara, no se puede realizar la" +
-                        "acción", Snackbar.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -343,8 +372,13 @@ public class InitActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+
         Lista listaActive = ((App) this.getApplication()).getListaActive();
         getSupportActionBar().setTitle(listaActive.getNombre());
+
+        if(voiceRecognition){
+
+        }
 
         Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }

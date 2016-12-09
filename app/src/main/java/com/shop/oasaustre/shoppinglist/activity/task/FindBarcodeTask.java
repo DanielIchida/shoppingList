@@ -2,7 +2,10 @@ package com.shop.oasaustre.shoppinglist.activity.task;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 
+import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.adapter.helper.ListaCompraPanelHelper;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
@@ -40,7 +43,10 @@ public class FindBarcodeTask extends AsyncTask<String,Void,ArticuloBarcodeDto> {
         if(articuloBarcodeDto.getListaCompra() != null){
             ListaCompraPanelHelper.refreshPanel(activity,articuloBarcodeDto.getListaCompra());
         }else{
-
+            View view = activity.findViewById(R.id.content_init);
+            Snackbar.make(view, "Lo sentimos no se ha podido encontrar el producto. " +
+                    "Por favor introduzcalo manualmente."
+                    , Snackbar.LENGTH_SHORT).show();
         }
 
     }
