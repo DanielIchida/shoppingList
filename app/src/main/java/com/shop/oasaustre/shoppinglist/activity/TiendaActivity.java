@@ -36,9 +36,6 @@ public class TiendaActivity extends AppCompatActivity {
 
         initializeUI();
 
-        LoadTiendasTask loadTiendasTask = new LoadTiendasTask(this);
-        loadTiendasTask.execute();
-
         Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
 
     }
@@ -71,6 +68,8 @@ public class TiendaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        LoadTiendasTask loadTiendasTask = new LoadTiendasTask(this);
+        loadTiendasTask.execute();
         Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
     @Override

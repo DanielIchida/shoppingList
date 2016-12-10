@@ -89,6 +89,62 @@ public class TiendaService {
     }
 
 
+    public Boolean removeTienda(Tienda tienda) {
+
+        TiendaDao tiendaDao = null;
+        Boolean result = Boolean.TRUE;
+
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+
+            daoSession.getDatabase().execSQL("UPDATE LISTA_COMPRA SET IDTIENDA = NULL WHERE IDTIENDA = ?  "
+                    ,new String[]{tienda.getId().toString()});
+
+
+            tiendaDao = daoSession.getTiendaDao();
+
+            tiendaDao.delete(tienda);
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido eliminar la tienda:"+ex);
+            result = Boolean.TRUE;
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
+
+        return result;
+    }
+
+
+    public void updateTienda(Tienda tienda){
+        TiendaDao tiendaDao = null;
+
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+            tiendaDao = daoSession.getTiendaDao();
+
+            tiendaDao.update(tienda);
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido actualizar la tienda:"+ ex);
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
+    }
+
+
 }
 
 

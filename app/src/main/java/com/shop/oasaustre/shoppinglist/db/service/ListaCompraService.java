@@ -122,7 +122,6 @@ public class ListaCompraService {
 
             if (listaCompra != null) {
                 daoSession.getArticuloDao().update(listaCompra.getArticulo());
-                //listaCompraBD = daoSession.getListaCompraDao().load(listaCompra.getId());
                 daoSession.getListaCompraDao().update(listaCompra);
 
             }
@@ -141,6 +140,7 @@ public class ListaCompraService {
         Cursor cursor = null;
         List<Articulo> allArticles = null;
         Long totalUnidades = 0l;
+        ListaCompraDao listaCompraDao = null;
         ListaCompraDto listaCompraDto = new ListaCompraDto();
 
         DaoSession daoSession = app.getDaoSession();
@@ -151,7 +151,11 @@ public class ListaCompraService {
 
             allArticles = daoSession.getArticuloDao().loadAll();
 
-            List<ListaCompra> lstCompra = daoSession.getListaCompraDao()._queryLista_ListaCompra(idLista);
+            listaCompraDao = daoSession.getListaCompraDao();
+
+            listaCompraDao.detachAll();
+
+            List<ListaCompra> lstCompra = listaCompraDao._queryLista_ListaCompra(idLista);
 
 
 

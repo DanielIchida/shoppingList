@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.ArticleSaveActivity;
+import com.shop.oasaustre.shoppinglist.activity.CategoriaSaveActivity;
 import com.shop.oasaustre.shoppinglist.adapter.CategoriaAdapter;
 import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
@@ -70,7 +71,12 @@ public class LoadCategoriesTask extends AsyncTask<Void,Void,List<Categoria>> {
 
             @Override
             public void onClick(View view) {
-            //TODO: Hay que implementarlo
+                int positionItemSelect = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
+                CategoriaAdapter adapter = (CategoriaAdapter)((RecyclerView) view.getParent()).getAdapter();
+                Categoria categoria = adapter.getLista().get(positionItemSelect);
+
+                editCategoria(categoria);
+
             }
         });
 
@@ -79,6 +85,15 @@ public class LoadCategoriesTask extends AsyncTask<Void,Void,List<Categoria>> {
         rvCategoria.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         rvCategoria.setLayoutManager(layoutManager);
+
+    }
+
+    private void editCategoria(Categoria categoria){
+        Intent intent = null;
+        intent = new Intent(activity, CategoriaSaveActivity.class);
+        intent.putExtra(AppConstant.ID_INTENT,categoria.getId());
+        intent.putExtra(AppConstant.TITLE_INTENT,categoria.getNombre());
+        activity.startActivity(intent);
 
     }
 }

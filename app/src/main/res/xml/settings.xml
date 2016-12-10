@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="preferencias_principal">
+    <EditTextPreference
+        android:key="currency"
+        android:title="Moneda"
+        android:inputType="text"
+        android:summary="Símbolo de la moneda que utiliza la aplicación"
+        android:defaultValue="€" />
+    <CheckBoxPreference
+        android:key="activeNotificaciones"
+        android:title="Activar notificaciones"
+        android:summary="Activa las notificaciones avisando si alguna lista de la compra está incompleta" />
+    <ListPreference
+        android:key="notificacionScheduled"
+        android:title="Periodicidad de la notificación"
+        android:summary="Periodicidad de la notificación"
+        android:entries="@array/periodic"
+        android:entryValues="@array/periodicValues"
+        android:defaultValue="0" />
+</PreferenceScreen>

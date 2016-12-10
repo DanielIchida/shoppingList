@@ -27,7 +27,6 @@ public class ListaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //toolbar.setNavigationIcon(getResources().getDrawable(android.R.drawable.btn_star));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,8 +36,7 @@ public class ListaActivity extends AppCompatActivity {
 
         initializeUI();
 
-        LoadListasTask loadListasTask = new LoadListasTask(this);
-        loadListasTask.execute();
+
     }
 
     private void initializeUI(){
@@ -69,6 +67,8 @@ public class ListaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        LoadListasTask loadListasTask = new LoadListasTask(this);
+        loadListasTask.execute();
         Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
     @Override

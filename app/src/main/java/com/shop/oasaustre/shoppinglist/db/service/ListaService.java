@@ -5,10 +5,9 @@ import android.util.Log;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
+import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
-import com.shop.oasaustre.shoppinglist.db.dao.TiendaDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
-import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
 import com.shop.oasaustre.shoppinglist.dto.ListaActivaDto;
 
 import org.greenrobot.greendao.query.Query;
@@ -43,7 +42,7 @@ public class ListaService {
             listaDao = daoSession.getListaDao();
 
             lstLista = listaDao.queryBuilder().
-                    orderAsc(ListaDao.Properties.Nombre).
+                    orderDesc(ListaDao.Properties.Fecha).
                     list();
 
 
@@ -119,7 +118,7 @@ public class ListaService {
             }else{
                 listaDao.insert(lista);
                 daoSession.getDatabase().rawQuery("UPDATE LISTA SET ACTIVO = 0 " +
-                        "WHERE ID <> ?",new String[]{lista.getId().toString()}).moveToFirst();
+                        "WHERE ID <> ?",new String[]{lista.getId().toString()});
             }
 
 
@@ -168,6 +167,94 @@ public class ListaService {
         result.setListaActiva(lista);
 
         return result;
+    }
+
+
+    public Boolean removeLista(Lista lista) {
+
+        ListaDao listaDao = null;
+        ListaCompraDao listaCompraDao = null;
+        List<Lista> lstLista = null;
+        Boolean result = Boolean.TRUE;
+
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+
+            listaDao = daoSession.getListaDao();
+
+
+
+            long total = listaDao.queryBuilder().count();
+
+            if(total == 1l){
+
+            }else if(total > 1l){
+                daoSession.getDatabase().execSQL("DELETE FROM LISTA_COMPRA WHERE IDLISTA = ?"
+                        ,new String[]{lista.getId().toString()});
+
+                daoSession.getDatabase().execSQL("DELETE FROM LISTA WHERE ID = ?",
+                        new String[]{lista.getId().toString()});
+
+                //listaDao.delete(lista);
+
+                if(lista.getActivo() == 1l){
+                    daoSession.getDatabase().execSQL("UPDATE LISTA SET ACTIVO = 1 WHERE ACTIVO = 0 " +
+                            "AND FECHA = (SELECT MAX(FECHA) FROM LISTA L2 WHERE L2.ID <> ? " +
+                            "AND L2.ACTIVO = 0)",new String[]{lista.getId().toString()});
+
+                    List<Lista> listaActiva = listaDao.queryBuilder().where
+                            (new WhereCondition.StringCondition("ACTIVO = 1")).list();
+                    if(listaActiva != null){
+                        app.setListaActive(listaActiva.get(0));
+                    }
+
+                }
+
+
+            }
+
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido eliminar la lista "+lista.getNombre()+" :"+ex);
+            result = Boolean.FALSE;
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
+
+        return result;
+    }
+
+
+    public void updateLista(Lista lista){
+        ListaDao listaDao = null;
+
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+            listaDao = daoSession.getListaDao();
+
+            listaDao.update(lista);
+
+            if(lista.getActivo() == 1l){
+                app.setListaActive(lista);
+            }
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido actualizar la lista:"+ ex);
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
     }
 
 

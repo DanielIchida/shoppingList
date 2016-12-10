@@ -33,9 +33,6 @@ public class CategoriaActivity extends AppCompatActivity {
 
         initializeUI();
 
-        LoadCategoriesTask loadCategoriesTask = new LoadCategoriesTask(this);
-        loadCategoriesTask.execute();
-
         Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
     }
 
@@ -66,6 +63,8 @@ public class CategoriaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        LoadCategoriesTask loadCategoriesTask = new LoadCategoriesTask(this);
+        loadCategoriesTask.execute();
         Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
     @Override

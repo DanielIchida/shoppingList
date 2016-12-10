@@ -1,7 +1,10 @@
 package com.shop.oasaustre.shoppinglist.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
+import com.shop.oasaustre.shoppinglist.activity.ListaSaveActivity;
+import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteListaDialog;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
-import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,21 +111,34 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
 
                 @Override
                 public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    getLista().remove(pos);
-                    notifyDataSetChanged();
+                    if(getItemCount() == 1){
+
+                           Snackbar.make(v, "Esta lista no se puede eliminar porque es tu única lista de la compra",
+                                Snackbar.LENGTH_LONG).show();
+
+                    }else{
+                        DeleteListaDialog dialog = new DeleteListaDialog();
+                        dialog.setDelPosition(getAdapterPosition());
+                        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(),"Eliminar Lista");
+
+                    }
                 }
             });
 
-           /* itemView.setOnClickListener(new View.OnClickListener() {
-
+            iconoEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    g
-                    Toast.makeText(itemView.getContext(), DataProvider.JAVA_BOOKS[pos], Toast.LENGTH_SHORT).show();
+                public void onClick(View view) {
+                    int positionItemSelect = getAdapterPosition();
+                    Lista lista = getLista().get(positionItemSelect);
+                    Intent intent = new Intent(context, ListaSaveActivity.class);
+                    intent.putExtra(AppConstant.ID_INTENT, lista.getId());
+                    intent.putExtra(AppConstant.TITLE_INTENT,lista.getNombre());
+                    intent.putExtra(AppConstant.ACTIVE_INTENT, lista.getActivo());
+                    intent.putExtra(AppConstant.FECHA_INTENT,lista.getFecha());
+                    context.startActivity(intent);
                 }
-            });*/
+            });
+
         }
 
         public TextView getTituloLista() {

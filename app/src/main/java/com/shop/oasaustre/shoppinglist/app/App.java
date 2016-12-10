@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by oasaustre on 29/11/16.
@@ -30,9 +32,20 @@ public class App extends Application {
 
     private Lista listaCompraActive;
 
+    private Settings settings;
+
+    private ScheduledThreadPoolExecutor exec;
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        exec = new ScheduledThreadPoolExecutor(1);
+
+        SettingsHelper settingsHelper = new SettingsHelper(getApplicationContext(),this);
+        settingsHelper.configure();
 
         try {
             copyDataBase("shopping_list.db");
@@ -58,6 +71,21 @@ public class App extends Application {
         this.listaCompraActive = lista;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public ScheduledThreadPoolExecutor getExec() {
+        return exec;
+    }
+
+    public void setExec(ScheduledThreadPoolExecutor exec) {
+        this.exec = exec;
+    }
 
     private void loadShoppingListActive(){
         List<Lista> currentList = null;

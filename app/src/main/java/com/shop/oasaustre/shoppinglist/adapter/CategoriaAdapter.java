@@ -1,7 +1,9 @@
 package com.shop.oasaustre.shoppinglist.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
+import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteCategoriaDialog;
 import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
 
@@ -84,9 +87,9 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
 
                 @Override
                 public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    getLista().remove(pos);
-                    notifyDataSetChanged();
+                    DeleteCategoriaDialog dialog = new DeleteCategoriaDialog();
+                    dialog.setDelPosition(getAdapterPosition());
+                    dialog.show(((AppCompatActivity) context).getSupportFragmentManager(),"Eliminar categoría");
                 }
             });
 

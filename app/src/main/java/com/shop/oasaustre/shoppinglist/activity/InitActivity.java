@@ -36,6 +36,7 @@ import com.shop.oasaustre.shoppinglist.activity.task.ArticleInShoppingListTask;
 import com.shop.oasaustre.shoppinglist.activity.task.FindBarcodeTask;
 import com.shop.oasaustre.shoppinglist.activity.task.LoadArticlesTask;
 import com.shop.oasaustre.shoppinglist.app.App;
+import com.shop.oasaustre.shoppinglist.app.SettingsHelper;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 
@@ -46,13 +47,10 @@ import java.util.Locale;
 public class InitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Boolean voiceRecognition;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        voiceRecognition = Boolean.FALSE;
         setContentView(R.layout.activity_init);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,8 +65,7 @@ public class InitActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        LoadArticlesTask task = new LoadArticlesTask(this);
-        task.execute();
+
 
         initializeTextFind();
         initializeUI();
@@ -104,6 +101,7 @@ public class InitActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            lanzarSettings();
             return true;
         } else if (id == R.id.action_lista) {
             createLista();
@@ -144,6 +142,10 @@ public class InitActivity extends AppCompatActivity
         return true;
     }
 
+    private void lanzarSettings(){
+        Intent i = new Intent(this, SettingsActivity.class);
+        startActivityForResult(i,AppConstant.RES_SETTINGS);
+    }
 
     private void createLista() {
         ListDialog listDialog = new ListDialog();
@@ -318,6 +320,9 @@ public class InitActivity extends AppCompatActivity
                 Snackbar.make(view, "No se ha reconocido ninguna palabras. Inténtalo de nuevo",
                         Snackbar.LENGTH_LONG).show();
             }
+        }else if(requestCode == AppConstant.RES_SETTINGS){
+            SettingsHelper helper = new SettingsHelper(this,(App) getApplication());
+            helper.configure();
         }
         else{
             IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -376,9 +381,8 @@ public class InitActivity extends AppCompatActivity
         Lista listaActive = ((App) this.getApplication()).getListaActive();
         getSupportActionBar().setTitle(listaActive.getNombre());
 
-        if(voiceRecognition){
-
-        }
+        LoadArticlesTask task = new LoadArticlesTask(this);
+        task.execute();
 
         Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }

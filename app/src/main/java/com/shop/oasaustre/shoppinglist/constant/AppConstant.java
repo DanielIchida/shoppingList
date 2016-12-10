@@ -11,6 +11,7 @@ public class AppConstant {
 
     public static final Integer RES_UPDATE_ARTICLE = 1;
     public static final Integer RES_VOICE = 2;
+    public static final Integer RES_SETTINGS = 3;
 
     public static final Integer OP_MINUS = 1;
     public static final Integer OP_PLUS = 2;
@@ -24,6 +25,20 @@ public class AppConstant {
     public static final Long LISTA_ACTIVA = 1l;
     public static final Long LISTA_INACTIVA = 0l;
     public static final Integer CAMERA_PERMISSION = 5;
+
+    public static final String ID_INTENT = "Id";
+    public static final String TITLE_INTENT = "Titulo";
+    public static final String ACTIVE_INTENT = "Activo";
+    public static final String FECHA_INTENT = "Fecha";
+
+    public static final String CURRENCY_PREF = "currency";
+    public static final String CURRENCY_DEFAULT = "€";
+    public static final String ACTIVE_NOTIF_PREF = "activeNotificaciones";
+    public static final String SCHEDULED_NOTIF_PREF = "notificacionScheduled";
+    public static final String SCHEDULED_NOTIF_DEFAULT = "0";
+
+    public static final Integer ID_NOTIFICATION_LISTA = 1;
+
 
 
 }

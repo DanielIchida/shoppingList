@@ -1,11 +1,14 @@
 package com.shop.oasaustre.shoppinglist.db.service;
 
+import android.database.Cursor;
 import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.dao.CategoriaDao;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
+import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
+import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;
@@ -78,6 +81,63 @@ public class CategoriaService {
             }
 
 
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido guardar la categoría "+ ex);
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
+    }
+
+    public Boolean removeCategoria(Categoria categoria) {
+
+        CategoriaDao categoriaDao = null;
+        Boolean result = Boolean.TRUE;
+
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+
+            daoSession.getDatabase().execSQL("UPDATE LISTA_COMPRA SET IDCATEGORIA = NULL WHERE IDCATEGORIA = ?  "
+                    ,new String[]{categoria.getId().toString()});
+
+
+            categoriaDao = daoSession.getCategoriaDao();
+
+            categoriaDao.delete(categoria);
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido eliminar la categoría:"+ex);
+            result = Boolean.TRUE;
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
+
+        return result;
+    }
+
+
+    public void updateCategoria(Categoria categoria){
+        CategoriaDao categoriaDao = null;
+        WhereCondition.StringCondition condition = null;
+        Query query = null;
+        List<Categoria> lstCategoria = null;
+
+        DaoSession daoSession = app.getDaoSession();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+            categoriaDao = daoSession.getCategoriaDao();
+
+            categoriaDao.update(categoria);
 
             daoSession.getDatabase().setTransactionSuccessful();
 
