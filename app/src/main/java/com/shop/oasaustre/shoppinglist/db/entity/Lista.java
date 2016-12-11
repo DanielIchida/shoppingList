@@ -1,5 +1,9 @@
 package com.shop.oasaustre.shoppinglist.db.entity;
 
+import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
+import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
+import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
+
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -9,9 +13,6 @@ import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
-import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
-import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
-import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
 
 /**
  * Created by AsaustreGarO on 29/11/2016.

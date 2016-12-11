@@ -1,30 +1,15 @@
 package com.shop.oasaustre.shoppinglist.activity.task;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.dialog.CategoriaDialog;
-import com.shop.oasaustre.shoppinglist.activity.dialog.ListDialog;
 import com.shop.oasaustre.shoppinglist.adapter.CategoriaAdapter;
-import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
-import com.shop.oasaustre.shoppinglist.constant.AppConstant;
-import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
-import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
-import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
-
-import org.greenrobot.greendao.query.Query;
-import org.greenrobot.greendao.query.WhereCondition;
-
-import java.util.List;
 
 /**
  * Created by oasaustre on 3/12/16.

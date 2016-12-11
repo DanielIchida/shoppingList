@@ -6,12 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
 
 import java.util.List;
 

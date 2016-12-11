@@ -3,17 +3,9 @@ package com.shop.oasaustre.shoppinglist.activity.task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.app.App;
-import com.shop.oasaustre.shoppinglist.constant.AppConstant;
-import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
-import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
-import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
 import com.shop.oasaustre.shoppinglist.db.service.ListaCompraService;
 
 /**

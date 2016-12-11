@@ -1,14 +1,12 @@
 package com.shop.oasaustre.shoppinglist.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.task.ArticleDetailTask;
@@ -28,17 +26,7 @@ public class ArticleSaveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_save);
 
-        ArrayAdapter<String> adapterText = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, new String[]{"kg","g","pieza","bolsa","pack","l","docena"});
-
-        Spinner spinner = (Spinner) findViewById(R.id.fieldUnit);
-
-        spinner.setAdapter(adapterText);
-
         initializeUI();
-
-        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
-
 
     }
 
@@ -46,6 +34,11 @@ public class ArticleSaveActivity extends AppCompatActivity {
 
         TextView btnGuardar = (TextView) findViewById(R.id.btnGuardar);
         TextView btnCancelar = (TextView) findViewById(R.id.btnCancelar);
+        TextView txtCurrency = (TextView) findViewById(R.id.titleCurrency);
+
+        App app = (App)this.getApplication();
+
+        txtCurrency.setText(app.getSettings().getCurrency());
 
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,13 +173,11 @@ public class ArticleSaveActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onResume() {
         super.onResume();
 
-        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
 
         Long idListaCompra = (Long) getIntent().getExtras().get("idListaCompra");
 
@@ -197,22 +188,18 @@ public class ArticleSaveActivity extends AppCompatActivity {
     }
     @Override
     protected void onPause() {
-        Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
         super.onPause();
     }
     @Override
     protected void onStop() {
         super.onStop();
-        Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
     }
 }

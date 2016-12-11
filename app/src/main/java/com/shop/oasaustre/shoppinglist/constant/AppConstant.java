@@ -39,6 +39,10 @@ public class AppConstant {
 
     public static final Integer ID_NOTIFICATION_LISTA = 1;
 
+    public static final String DAY_SCHEDULED ="DAY_SCHEDULED";
+    public static final String MONTH_SCHEDULED = "MONTH_SCHEDULED";
+    public static final String YEAR_SCHEDULED = "YEAR_SCHEDULED";
+
 
 
 }

@@ -8,7 +8,7 @@
         android:name=".app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="shopping"
+        android:label="Lista de la Compra"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -51,7 +51,11 @@
         <service
             android:name=".service.CheckListaCompraService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".activity.GastosMensualesActivity"
+            android:label="Informe de Gastos"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

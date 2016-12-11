@@ -1,6 +1,5 @@
 package com.shop.oasaustre.shoppinglist.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteCategoriaDialog;
 import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
-import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
 
 import java.util.List;
 

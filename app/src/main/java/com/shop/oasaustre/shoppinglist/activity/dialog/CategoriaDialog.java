@@ -7,15 +7,12 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.task.NewCategoryTask;
-import com.shop.oasaustre.shoppinglist.activity.task.NewListTask;
-
-import static com.shop.oasaustre.shoppinglist.R.id.fieldNewList;
 
 /**
  * Created by oasaustre on 3/12/16.
@@ -41,8 +38,8 @@ public class CategoriaDialog extends DialogFragment {
 
 
 
-        Button btnNewSave = (Button) v.findViewById(R.id.btnNewCategorySave);
-        Button btnNewCancel = (Button) v.findViewById(R.id.btnNewCategoryCancel);
+        TextView btnNewSave = (TextView) v.findViewById(R.id.btnNewCategorySave);
+        TextView btnNewCancel = (TextView) v.findViewById(R.id.btnNewCategoryCancel);
         final EditText fieldNewCategory = (EditText) v.findViewById(R.id.fieldNewCategory);
 
         btnNewSave.setOnClickListener(

@@ -1,7 +1,6 @@
 package com.shop.oasaustre.shoppinglist.activity;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,8 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -70,8 +67,6 @@ public class InitActivity extends AppCompatActivity
         initializeTextFind();
         initializeUI();
 
-        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
-
 
     }
 
@@ -105,12 +100,6 @@ public class InitActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_lista) {
             createLista();
-        } else if (id == R.id.action_categorias) {
-            navCategorias();
-        } else if (id == R.id.action_tiendas) {
-            navTiendas();
-        } else if (id == R.id.action_admin_lista) {
-            navListas();
         }
 
 
@@ -123,18 +112,14 @@ public class InitActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_admin_categoria) {
+            navCategorias();
+        } else if (id == R.id.nav_admin_lista) {
+            navListas();
+        } else if (id == R.id.nav_admin_tienda) {
+            navTiendas();
+        } else if (id == R.id.nav_gastos) {
+            navGastos();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -166,6 +151,11 @@ public class InitActivity extends AppCompatActivity
 
     private void navListas() {
         Intent intent = new Intent(this, ListaActivity.class);
+        startActivity(intent);
+    }
+
+    private void navGastos(){
+        Intent intent = new Intent(this, GastosMensualesActivity.class);
         startActivity(intent);
     }
 
@@ -340,8 +330,6 @@ public class InitActivity extends AppCompatActivity
             VoiceResultDialog  dialog = new VoiceResultDialog(this);
             dialog.setWords(result);
             dialog.show();
-            /*dialog.setWords(result);
-            dialog.show(getSupportFragmentManager(), "Lista Palabras");*/
         }else{
             View view = this.findViewById(R.id.content_init);
             Snackbar.make(view, "No se ha reconocido ninguna palabras. Inténtalo de nuevo",
@@ -370,7 +358,6 @@ public class InitActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -384,30 +371,25 @@ public class InitActivity extends AppCompatActivity
         LoadArticlesTask task = new LoadArticlesTask(this);
         task.execute();
 
-        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
-        Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
         super.onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
     }
 }

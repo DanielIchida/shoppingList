@@ -3,7 +3,6 @@ package com.shop.oasaustre.shoppinglist.db.service;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.dao.ArticuloDao;
@@ -23,7 +22,6 @@ import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,6 +43,7 @@ public class ListaCompraService {
         Lista currentList = null;
         ListaCompra listaCompra = null;
         ListaCompraDao listaCompraDao = null;
+        Long unidades = 1l;
 
         DaoSession daoSession = app.getDaoSession();
 
@@ -71,6 +70,7 @@ public class ListaCompraService {
 
             listaCompra = new ListaCompra();
             listaCompra.setArticulo(articulo);
+            listaCompra.setUnidades(unidades);
             listaCompra.setLista(currentList);
             listaCompraDao = daoSession.getListaCompraDao();
             listaCompraDao.insert(listaCompra);
@@ -149,6 +149,8 @@ public class ListaCompraService {
 
             daoSession.getDatabase().beginTransaction();
 
+            daoSession.getArticuloDao().detachAll();
+
             allArticles = daoSession.getArticuloDao().loadAll();
 
             listaCompraDao = daoSession.getListaCompraDao();
@@ -159,18 +161,19 @@ public class ListaCompraService {
 
 
 
-            cursor = daoSession.getDatabase().rawQuery("SELECT SUM(PRECIO*UNIDADES) " +
+            cursor = daoSession.getDatabase().rawQuery("SELECT SUM(PRECIO*UNIDADES), SUM(UNIDADES) " +
                     "FROM LISTA_COMPRA WHERE IDLISTA = ?;",new String[]{idLista.toString()});
             if(cursor.moveToFirst()){
                 result = cursor.getDouble(0);
+                totalUnidades = cursor.getLong(1);
             }
 
             listaCompraDto.setAllArticles(allArticles);
             listaCompraDto.setLstCompra(lstCompra);
             listaCompraDto.setSumTotalListaCompra(result);
-            if(lstCompra != null){
+            /*if(lstCompra != null){
                 totalUnidades = new Long(lstCompra.size());
-            }
+            }*/
             listaCompraDto.setTotalUnidades(totalUnidades);
 
             daoSession.getDatabase().setTransactionSuccessful();

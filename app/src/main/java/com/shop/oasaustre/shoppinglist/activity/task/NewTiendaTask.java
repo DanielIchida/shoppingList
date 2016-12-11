@@ -5,14 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.activity.dialog.CategoriaDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.TiendaDialog;
-import com.shop.oasaustre.shoppinglist.adapter.CategoriaAdapter;
 import com.shop.oasaustre.shoppinglist.adapter.TiendaAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
-import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
 import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
-import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
 import com.shop.oasaustre.shoppinglist.db.service.TiendaService;
 
 /**

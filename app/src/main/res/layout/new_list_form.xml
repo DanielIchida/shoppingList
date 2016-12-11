@@ -11,7 +11,8 @@
         android:id="@+id/fieldNewList" />
 
 
-    <Button
+    <TextView
+        style="@style/ButtonTextStyleFloat"
         android:text="Cancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +20,8 @@
         android:layout_alignParentRight="true"
         android:id="@+id/btnNewCancel" />
 
-    <Button
+    <TextView
+        style="@style/ButtonTextStyleFloat"
         android:text="Guardar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

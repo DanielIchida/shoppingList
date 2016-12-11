@@ -5,9 +5,6 @@ import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteArticlesDialog;
@@ -15,7 +12,6 @@ import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
 import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
-import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
 import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
 import com.shop.oasaustre.shoppinglist.db.service.ListaCompraService;
 
@@ -67,6 +63,8 @@ public class DelArticlesShoppingListTask extends AsyncTask<Void,Void,Boolean> {
         if(result){
             RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.rv_listaCompraActual);
             ((ListaCompraAdapter)recyclerView.getAdapter()).removeItems(selectedItem);
+            LoadArticlesTask task = new LoadArticlesTask(activity);
+            task.execute();
         }
         FloatingActionButton fab = (FloatingActionButton) activity.findViewById(R.id.deleteArticleFloat);
         fab.setVisibility(View.INVISIBLE);

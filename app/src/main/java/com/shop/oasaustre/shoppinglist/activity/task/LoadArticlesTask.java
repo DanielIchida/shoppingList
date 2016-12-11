@@ -69,7 +69,7 @@ public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> {
 
         ((InitActivity)activity).getSupportActionBar().setTitle(listaActive.getNombre());
 
-        adapter = new ListaCompraAdapter(activity, listaCompraDto.getLstCompra());
+        adapter = new ListaCompraAdapter(activity, listaCompraDto.getLstCompra(),(App) activity.getApplication());
 
         adapter.setOnClickListener(new View.OnClickListener(){
 
@@ -80,8 +80,6 @@ public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> {
                 ListaCompraAdapter adapter = (ListaCompraAdapter)((RecyclerView) view.getParent()).getAdapter();
                 ListaCompra listaCompra = ((ContentItem) adapter.getLista().get(positionItemSelect)).getListaCompra();
 
-                /*ListaCompra listaCompra = ((ListaCompraAdapter)((RecyclerView) view.getParent()).
-                        getAdapter()).getLista().get(positionItemSelect);*/
 
                 Intent i = new Intent(activity,ArticleSaveActivity.class);
                 i.putExtra("idListaCompra",listaCompra.getId());

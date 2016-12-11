@@ -3,9 +3,9 @@
     android:padding="10dp"
     android:shape="rectangle" >
     <stroke
-        android:color="#408511"
+        android:color="@color/colorPrimaryDark"
         android:width="2dp" />
-    <solid android:color="#F3F3F3" />
+    <solid android:color="@color/backgroundAutoComplete" />
     <corners  android:bottomLeftRadius="5dp"
         android:bottomRightRadius="5dp"
         android:topLeftRadius="5dp"

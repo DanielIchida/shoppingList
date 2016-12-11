@@ -60,6 +60,7 @@ public class ArticuloService {
 
                 listaCompra = new ListaCompra();
                 listaCompra.setArticulo(articulo);
+                listaCompra.setUnidades(1l);
                 listaCompra.setLista(currentList);
                 listaCompraDao = daoSession.getListaCompraDao();
                 listaCompraDao.insert(listaCompra);

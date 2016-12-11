@@ -2,11 +2,7 @@ package com.shop.oasaustre.shoppinglist.activity.task;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
-import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.adapter.helper.ListaCompraPanelHelper;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;

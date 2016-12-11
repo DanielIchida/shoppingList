@@ -2,7 +2,6 @@ package com.shop.oasaustre.shoppinglist.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +18,7 @@ import com.shop.oasaustre.shoppinglist.adapter.helper.ListaCompraAdapterHelper;
 import com.shop.oasaustre.shoppinglist.adapter.item.ContentItem;
 import com.shop.oasaustre.shoppinglist.adapter.item.HeaderItem;
 import com.shop.oasaustre.shoppinglist.adapter.item.ListItem;
+import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
@@ -36,10 +36,12 @@ public class ListaCompraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context context;
     private View.OnClickListener onClickListener;
     private List<Long> selectedItem;
+    private App app;
 
-    public ListaCompraAdapter(Context context, List<ListaCompra> lista) {
+    public ListaCompraAdapter(Context context, List<ListaCompra> lista, App app) {
         this.lista = ListaCompraAdapterHelper.performTransform(lista);
         this.context = context;
+        this.app = app;
         inflador = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         selectedItem = new ArrayList<Long>();
     }
@@ -77,11 +79,8 @@ public class ListaCompraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             headerViewHolder.reset();
 
             headerViewHolder.getHeader().setText(headerItem.getHeader());
-            if (i % 2 == 0) {
-                headerViewHolder.getLayout().setBackground(ContextCompat.getDrawable(context,R.drawable.header_list));
-            } else {
-                headerViewHolder.getLayout().setBackground(ContextCompat.getDrawable(context,R.drawable.header_list));
-            }
+            headerViewHolder.getLayout().setBackground(ContextCompat.getDrawable(context,R.drawable.header_list));
+
 
         }else if(type == ListItem.TYPE_CONTENT){
             ContentViewHolder contentViewHolder = null;
@@ -102,11 +101,11 @@ public class ListaCompraAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             if(listaCompra.getPrecio() != null && listaCompra.getUnidades() != null){
-                contentViewHolder.getPrecio().setText(Double.valueOf(listaCompra.getPrecio() * listaCompra.getUnidades()).toString() + AppConstant.EURO) ;
+                contentViewHolder.getPrecio().setText(Double.valueOf(listaCompra.getPrecio() * listaCompra.getUnidades()).toString() + app.getSettings().getCurrency()) ;
             }else if(listaCompra.getPrecio() != null){
-                contentViewHolder.getPrecio().setText(listaCompra.getPrecio().toString() + AppConstant.EURO);
+                contentViewHolder.getPrecio().setText(listaCompra.getPrecio().toString() + app.getSettings().getCurrency());
             }else{
-                contentViewHolder.getCantidad().setText(AppConstant.BLANK);
+                contentViewHolder.getPrecio().setText(AppConstant.BLANK);
             }
 
             if (i % 2 == 0) {

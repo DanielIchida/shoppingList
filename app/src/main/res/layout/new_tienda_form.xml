@@ -10,16 +10,18 @@
         android:hint="Nueva Tienda"
             android:id="@+id/fieldNewTienda" />
 
-    <Button
+    <TextView
         android:text="Cancelar"
+        style="@style/ButtonTextStyleFloat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/fieldNewTienda"
         android:layout_alignParentRight="true"
         android:id="@+id/btnNewTiendaCancel" />
 
-    <Button
+    <TextView
         android:text="Guardar"
+        style="@style/ButtonTextStyleFloat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/fieldNewTienda"

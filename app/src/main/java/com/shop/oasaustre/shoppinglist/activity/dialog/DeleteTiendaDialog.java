@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.activity.task.DelListaTask;
 import com.shop.oasaustre.shoppinglist.activity.task.DelTiendaTask;
 
 /**

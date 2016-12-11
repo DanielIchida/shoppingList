@@ -1,5 +1,6 @@
 package com.shop.oasaustre.shoppinglist.db.service;
 
+import android.database.Cursor;
 import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.app.App;
@@ -8,11 +9,13 @@ import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
+import com.shop.oasaustre.shoppinglist.dto.GastosDto;
 import com.shop.oasaustre.shoppinglist.dto.ListaActivaDto;
 
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -255,6 +258,48 @@ public class ListaService {
         } finally {
             daoSession.getDatabase().endTransaction();
         }
+    }
+
+
+    public List<GastosDto> calculateGastos(){
+        GastosDto gastosDto = null;
+        DaoSession daoSession = app.getDaoSession();
+        List<GastosDto> lstGastos = new ArrayList<GastosDto>();
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+            String sql = "SELECT SUM(PRECIO*UNIDADES),strftime('%m',L.FECHA/1000,'unixepoch'),strftime('%Y',L.FECHA/1000,'unixepoch') "+
+            "FROM LISTA L, LISTA_COMPRA LC "+
+            "WHERE L.ID = LC.IDLISTA AND DATE(L.FECHA/1000,'unixepoch') BETWEEN DATE('now','start of month','-6 months') AND DATE('now','-1 days') "+
+            "GROUP BY strftime('%m',L.FECHA/1000,'unixepoch'),strftime('%Y',L.FECHA/1000,'unixepoch') " +
+                    "ORDER BY strftime('%Y',L.FECHA/1000,'unixepoch') DESC,strftime('%m',L.FECHA/1000,'unixepoch') DESC";
+
+
+
+            Cursor cursor = daoSession.getDatabase().rawQuery(sql,null);
+            while(cursor.moveToNext()){
+                gastosDto = new GastosDto();
+                gastosDto.setCantidad(cursor.getDouble(0));
+                gastosDto.setMonth(cursor.getString(1));
+                gastosDto.setYear(cursor.getString(2));
+
+                lstGastos.add(gastosDto);
+
+            }
+
+            if(cursor != null){
+                cursor.close();
+            }
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha podido calcular los gastos:"+ ex);
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
+
+        return lstGastos;
     }
 
 

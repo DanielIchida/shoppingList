@@ -7,12 +7,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.activity.task.NewCategoryTask;
 import com.shop.oasaustre.shoppinglist.activity.task.NewTiendaTask;
 
 /**
@@ -39,8 +38,8 @@ public class TiendaDialog extends DialogFragment {
 
 
 
-        Button btnNewSave = (Button) v.findViewById(R.id.btnNewTiendaSave);
-        Button btnNewCancel = (Button) v.findViewById(R.id.btnNewTiendaCancel);
+        TextView btnNewSave = (TextView) v.findViewById(R.id.btnNewTiendaSave);
+        TextView btnNewCancel = (TextView) v.findViewById(R.id.btnNewTiendaCancel);
         final EditText fieldNewTienda = (EditText) v.findViewById(R.id.fieldNewTienda);
 
         btnNewSave.setOnClickListener(

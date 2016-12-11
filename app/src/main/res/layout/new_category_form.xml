@@ -10,16 +10,18 @@
         android:hint="Nueva Categoría"
             android:id="@+id/fieldNewCategory" />
 
-    <Button
+    <TextView
         android:text="Cancelar"
+        style="@style/ButtonTextStyleFloat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/fieldNewCategory"
         android:layout_alignParentRight="true"
         android:id="@+id/btnNewCategoryCancel" />
 
-    <Button
+    <TextView
         android:text="Guardar"
+        style="@style/ButtonTextStyleFloat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/fieldNewCategory"

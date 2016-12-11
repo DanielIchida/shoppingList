@@ -1,7 +1,7 @@
 package com.shop.oasaustre.shoppinglist.app;
 
 import android.app.Application;
-import android.content.ContextWrapper;
+import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.db.dao.DaoMaster;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by oasaustre on 29/11/16.
@@ -36,13 +36,21 @@ public class App extends Application {
 
     private ScheduledThreadPoolExecutor exec;
 
+    private ScheduledFuture<?> scheduled;
+
 
 
     @Override
     public void onCreate() {
         super.onCreate();
+        settings = new Settings();
 
-        exec = new ScheduledThreadPoolExecutor(1);
+        try {
+
+            exec = new ScheduledThreadPoolExecutor(1);
+        }catch(Exception ex){
+            Log.w(this.getClass().getName(),"No se ha activado el schedule:",ex);
+        }
 
         SettingsHelper settingsHelper = new SettingsHelper(getApplicationContext(),this);
         settingsHelper.configure();
@@ -85,6 +93,14 @@ public class App extends Application {
 
     public void setExec(ScheduledThreadPoolExecutor exec) {
         this.exec = exec;
+    }
+
+    public ScheduledFuture<?> getScheduled() {
+        return scheduled;
+    }
+
+    public void setScheduled(ScheduledFuture<?> scheduled) {
+        this.scheduled = scheduled;
     }
 
     private void loadShoppingListActive(){

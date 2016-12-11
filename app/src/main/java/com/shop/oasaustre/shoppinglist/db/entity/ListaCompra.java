@@ -1,17 +1,18 @@
 package com.shop.oasaustre.shoppinglist.db.entity;
 
+import com.shop.oasaustre.shoppinglist.db.dao.ArticuloDao;
+import com.shop.oasaustre.shoppinglist.db.dao.CategoriaDao;
+import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
+import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
+import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
+import com.shop.oasaustre.shoppinglist.db.dao.TiendaDao;
+
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToOne;
-import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
-import com.shop.oasaustre.shoppinglist.db.dao.TiendaDao;
-import com.shop.oasaustre.shoppinglist.db.dao.CategoriaDao;
-import com.shop.oasaustre.shoppinglist.db.dao.ArticuloDao;
-import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
-import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
 
 /**
  * Created by AsaustreGarO on 29/11/2016.

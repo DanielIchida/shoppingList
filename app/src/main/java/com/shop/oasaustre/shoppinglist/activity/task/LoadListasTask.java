@@ -1,7 +1,6 @@
 package com.shop.oasaustre.shoppinglist.activity.task;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,18 +9,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.activity.ArticleSaveActivity;
 import com.shop.oasaustre.shoppinglist.adapter.ListaAdapter;
-import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
-import com.shop.oasaustre.shoppinglist.adapter.TiendaAdapter;
-import com.shop.oasaustre.shoppinglist.adapter.item.ContentItem;
 import com.shop.oasaustre.shoppinglist.app.App;
-import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
-import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
-import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
 import com.shop.oasaustre.shoppinglist.db.service.ListaService;
-import com.shop.oasaustre.shoppinglist.db.service.TiendaService;
 
 import java.util.List;
 

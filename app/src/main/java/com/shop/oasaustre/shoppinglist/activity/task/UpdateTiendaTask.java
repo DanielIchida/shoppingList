@@ -5,9 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.app.App;
-import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
 import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
-import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
 import com.shop.oasaustre.shoppinglist.db.service.TiendaService;
 
 /**

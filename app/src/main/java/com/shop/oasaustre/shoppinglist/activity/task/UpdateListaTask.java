@@ -6,9 +6,7 @@ import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
-import com.shop.oasaustre.shoppinglist.db.entity.Tienda;
 import com.shop.oasaustre.shoppinglist.db.service.ListaService;
-import com.shop.oasaustre.shoppinglist.db.service.TiendaService;
 
 /**
  * Created by oasaustre on 3/12/16.

@@ -5,10 +5,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.activity.task.DelArticlesShoppingListTask;
 import com.shop.oasaustre.shoppinglist.activity.task.DelCategoriaTask;
 
 /**

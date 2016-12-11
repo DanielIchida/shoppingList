@@ -1,14 +1,11 @@
 package com.shop.oasaustre.shoppinglist.db.service;
 
-import android.database.Cursor;
 import android.util.Log;
 
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.dao.CategoriaDao;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
-import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
-import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;

@@ -11,11 +11,4 @@
         android:key="activeNotificaciones"
         android:title="Activar notificaciones"
         android:summary="Activa las notificaciones avisando si alguna lista de la compra está incompleta" />
-    <ListPreference
-        android:key="notificacionScheduled"
-        android:title="Periodicidad de la notificación"
-        android:summary="Periodicidad de la notificación"
-        android:entries="@array/periodic"
-        android:entryValues="@array/periodicValues"
-        android:defaultValue="0" />
 </PreferenceScreen>

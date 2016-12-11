@@ -5,10 +5,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.shop.oasaustre.shoppinglist.R;
+import com.shop.oasaustre.shoppinglist.activity.GastosMensualesActivity;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 
 public class CheckListaCompraService extends Service {
@@ -29,17 +31,18 @@ public class CheckListaCompraService extends Service {
 
     private void crearNotificacion(){
         NotificationCompat.Builder notific = new NotificationCompat.Builder(getApplicationContext())
-                .setContentTitle("Notificación Lista de la Compra")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentText("Texto descriptivo");
+                .setContentTitle("Notificación del informe de gastos")
+                .setSmallIcon(R.drawable.ic_notif_shopping)
+                .setContentText("Haga click en la notificación para ver el resumen de gastos.");
 
-        /*Intent intencionPararMusica = new Intent(context,PararMusicaActivity.class);
-        intencionPararMusica.putExtra("cuerpoSMS",message.getMessageBody());
+        Intent intent = new Intent(getApplicationContext(),GastosMensualesActivity.class);
 
         PendingIntent intencionPendiente = PendingIntent.getActivity(
-                context, 0, intencionPararMusica, 0);
+                getApplicationContext(), 0, intent, 0);
 
-        notific.setContentIntent(intencionPendiente);*/
+        notific.setLights(Color.MAGENTA,2000,1000);
+
+        notific.setContentIntent(intencionPendiente);
 
         NotificationManager notificationManager = (NotificationManager)
                 getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);

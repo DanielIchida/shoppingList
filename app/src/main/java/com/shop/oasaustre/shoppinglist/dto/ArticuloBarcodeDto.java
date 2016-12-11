@@ -1,6 +1,5 @@
 package com.shop.oasaustre.shoppinglist.dto;
 
-import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
 import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
 
 /**

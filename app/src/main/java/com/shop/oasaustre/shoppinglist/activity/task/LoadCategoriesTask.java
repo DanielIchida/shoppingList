@@ -8,25 +8,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.activity.ArticleSaveActivity;
 import com.shop.oasaustre.shoppinglist.activity.CategoriaSaveActivity;
 import com.shop.oasaustre.shoppinglist.adapter.CategoriaAdapter;
-import com.shop.oasaustre.shoppinglist.adapter.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
-import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
-import com.shop.oasaustre.shoppinglist.db.entity.Articulo;
 import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
-import com.shop.oasaustre.shoppinglist.db.entity.Lista;
-import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
 import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
-import com.shop.oasaustre.shoppinglist.db.service.ListaCompraService;
-import com.shop.oasaustre.shoppinglist.dto.ListaCompraDto;
 
 import java.util.List;
 
