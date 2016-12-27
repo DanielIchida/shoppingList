@@ -10,5 +10,5 @@
     <CheckBoxPreference
         android:key="activeNotificaciones"
         android:title="Activar notificaciones"
-        android:summary="Activa las notificaciones avisando si alguna lista de la compra está incompleta" />
+        android:summary="Activa las notificaciones para avisar del informe del control de gastos" />
 </PreferenceScreen>
