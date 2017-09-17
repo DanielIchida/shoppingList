@@ -12,7 +12,7 @@ import com.shop.oasaustre.shoppinglist.db.service.ListaService;
  * Created by oasaustre on 3/12/16.
  */
 
-public class UpdateListaTask extends AsyncTask<Lista, Void,Lista> {
+public class UpdateListaTask extends AsyncTask<Lista, Void,Lista> implements ITask{
 
     private Activity activity;
 
@@ -41,5 +41,10 @@ public class UpdateListaTask extends AsyncTask<Lista, Void,Lista> {
     protected void onPostExecute(Lista lista) {
 
         activity.finish();
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute((Lista) params[0]);
     }
 }

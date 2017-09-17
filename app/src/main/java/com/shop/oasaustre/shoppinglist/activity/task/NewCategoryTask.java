@@ -15,7 +15,7 @@ import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
  * Created by oasaustre on 3/12/16.
  */
 
-    public class NewCategoryTask extends AsyncTask<String, Void,Categoria> {
+    public class NewCategoryTask extends AsyncTask<String, Void,Categoria> implements ITask {
 
     private String errors;
     private CategoriaDialog dialog;
@@ -54,5 +54,10 @@ import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
         }
 
         dialog.dismiss();
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute((String) params[0]);
     }
 }

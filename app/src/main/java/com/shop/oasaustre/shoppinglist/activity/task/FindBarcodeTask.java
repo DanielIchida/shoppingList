@@ -17,7 +17,7 @@ import com.shop.oasaustre.shoppinglist.dto.ArticuloBarcodeDto;
  * Created by oasaustre on 8/12/16.
  */
 
-public class FindBarcodeTask extends AsyncTask<String,Void,ArticuloBarcodeDto> {
+public class FindBarcodeTask extends AsyncTask<String,Void,ArticuloBarcodeDto> implements ITask{
 
     private Activity activity;
 
@@ -49,6 +49,11 @@ public class FindBarcodeTask extends AsyncTask<String,Void,ArticuloBarcodeDto> {
                     , Snackbar.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute((String) params[0]);
     }
 }
 

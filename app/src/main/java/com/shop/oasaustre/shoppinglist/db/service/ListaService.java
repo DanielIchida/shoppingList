@@ -9,6 +9,7 @@ import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaCompraDao;
 import com.shop.oasaustre.shoppinglist.db.dao.ListaDao;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
+import com.shop.oasaustre.shoppinglist.db.entity.ListaCompra;
 import com.shop.oasaustre.shoppinglist.dto.GastosDto;
 import com.shop.oasaustre.shoppinglist.dto.ListaActivaDto;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * Created by oasaustre on 3/12/16.
  */
 
-public class ListaService {
+public class ListaService implements IListaService{
 
     private App app;
 
@@ -300,6 +301,53 @@ public class ListaService {
         }
 
         return lstGastos;
+    }
+
+    public void getListaActive(){
+        DaoSession daoSession = app.getDaoSession();
+
+        List<Lista> currentList = null;
+        ListaDao listaDao = null;
+        Lista listaActive = null;
+
+        try {
+            daoSession.getDatabase().beginTransaction();
+
+            WhereCondition.StringCondition condition = new WhereCondition.StringCondition("activo = 1");
+
+            listaDao = daoSession.getListaDao();
+
+            Query<Lista> query = listaDao.queryBuilder().where(condition).build();
+
+            currentList = query.list();
+
+            if(currentList != null && currentList.size() > 0){
+                listaActive = currentList.get(0);
+            }else{
+                Lista initialList = new Lista();
+                long rowid;
+
+                initialList.setNombre("Lista Compra");
+                initialList.setFecha(System.currentTimeMillis());
+                initialList.setActivo(1l);
+
+
+                rowid = daoSession.getListaDao().insert(initialList);
+
+                initialList.setId(rowid);
+
+                listaActive = initialList;
+            }
+
+            app.setListaActive(listaActive);
+
+            daoSession.getDatabase().setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            Log.e(this.getClass().getName(), "No se ha recuperar la lista inicial:"+ ex);
+        } finally {
+            daoSession.getDatabase().endTransaction();
+        }
     }
 
 

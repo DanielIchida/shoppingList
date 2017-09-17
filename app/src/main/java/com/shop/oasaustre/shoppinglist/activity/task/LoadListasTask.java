@@ -20,7 +20,7 @@ import java.util.List;
  * Created by oasaustre on 3/12/16.
  */
 
-public class LoadListasTask extends AsyncTask<Void,Void,List<Lista>> {
+public class LoadListasTask extends AsyncTask<Void,Void,List<Lista>> implements ITask {
 
     private Activity activity = null;
     private ListaAdapter adapter = null;
@@ -74,5 +74,10 @@ public class LoadListasTask extends AsyncTask<Void,Void,List<Lista>> {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         rvLista.setLayoutManager(layoutManager);
 
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute();
     }
 }

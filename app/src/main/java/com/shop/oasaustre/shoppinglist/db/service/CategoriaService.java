@@ -16,7 +16,7 @@ import java.util.List;
  * Created by oasaustre on 3/12/16.
  */
 
-public class CategoriaService {
+public class CategoriaService implements ICategoriaService{
 
     private App app;
 

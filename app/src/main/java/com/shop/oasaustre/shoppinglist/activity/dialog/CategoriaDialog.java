@@ -12,7 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shop.oasaustre.shoppinglist.R;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
 import com.shop.oasaustre.shoppinglist.activity.task.NewCategoryTask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
+import com.shop.oasaustre.shoppinglist.app.App;
 
 /**
  * Created by oasaustre on 3/12/16.
@@ -68,8 +71,8 @@ public class CategoriaDialog extends DialogFragment {
     private void createNewCategoria(EditText field){
 
         if(field.getText().length() > 0){
-            NewCategoryTask task = new NewCategoryTask(this);
-            task.execute(field.getText().toString());
+            ITask task = TaskFactory.getInstance().createNewCategoryTask(this,(App) this.getActivity().getApplication());
+            task.run(field.getText().toString());
         }else{
             Toast.makeText(getActivity(),"El campo de texto está vacío",Toast.LENGTH_LONG);
         }

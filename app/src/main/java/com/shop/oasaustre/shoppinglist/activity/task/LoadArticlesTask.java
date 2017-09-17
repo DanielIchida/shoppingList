@@ -29,7 +29,7 @@ import com.shop.oasaustre.shoppinglist.dto.ListaCompraDto;
  * Created by oasaustre on 3/12/16.
  */
 
-public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> {
+public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> implements ITask {
 
     private Activity activity = null;
     private ListaCompraAdapter adapter = null;
@@ -111,5 +111,10 @@ public class LoadArticlesTask extends AsyncTask<Void,Void,ListaCompraDto> {
 
         txtTotalArticle.setText(listaCompraDto.getTotalUnidades().toString());
         txtTotalPrice.setText(listaCompraDto.getSumTotalListaCompra().toString() + "€");
+    }
+
+    @Override
+    public void run(Object ... params) {
+        this.execute();
     }
 }

@@ -23,7 +23,7 @@ import java.util.List;
  * Created by oasaustre on 3/12/16.
  */
 
-public class LoadTiendasTask extends AsyncTask<Void,Void,List<Tienda>> {
+public class LoadTiendasTask extends AsyncTask<Void,Void,List<Tienda>> implements ITask{
 
     private Activity activity = null;
     private TiendaAdapter adapter = null;
@@ -85,5 +85,10 @@ public class LoadTiendasTask extends AsyncTask<Void,Void,List<Tienda>> {
         intent.putExtra(AppConstant.TITLE_INTENT,tienda.getNombre());
         activity.startActivity(intent);
 
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute();
     }
 }

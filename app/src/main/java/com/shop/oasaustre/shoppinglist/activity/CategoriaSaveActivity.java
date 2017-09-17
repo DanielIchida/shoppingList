@@ -7,9 +7,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
 import com.shop.oasaustre.shoppinglist.activity.task.UpdateCategoryTask;
+import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Categoria;
+import com.shop.oasaustre.shoppinglist.dto.firebase.CategoriaDto;
 
 public class CategoriaSaveActivity extends AppCompatActivity {
 
@@ -38,7 +42,13 @@ public class CategoriaSaveActivity extends AppCompatActivity {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateCategoria();
+                App app = (App) CategoriaSaveActivity.this.getApplication();
+                if(app.isUserActive()){
+                    updateCategoriaFB();
+                }else{
+                    updateCategoria();
+                }
+
             }
         });
 
@@ -65,8 +75,25 @@ public class CategoriaSaveActivity extends AppCompatActivity {
         categoria.setNombre(fieldCategoriaTxt.getText().toString());
         categoria.setId(new Long(fieldIdCategoria.getText().toString()));
 
-        UpdateCategoryTask task = new UpdateCategoryTask(this);
-        task.execute(categoria);
+        ITask task = TaskFactory.getInstance().createUpdateCategoryTask(this, (App) this.getApplication());
+        task.run(categoria);
+
+    }
+
+    private void updateCategoriaFB(){
+        CategoriaDto categoriaDto = null;
+
+        EditText fieldCategoriaTxt = (EditText) this.findViewById(R.id.fieldCategoriaTxt);
+        TextView fieldIdCategoria = (TextView) this.findViewById(R.id.fieldIdCategoria);
+
+        categoriaDto = new CategoriaDto();
+
+        categoriaDto.setNombre(fieldCategoriaTxt.getText().toString());
+        categoriaDto.setUid(fieldIdCategoria.getText().toString());
+
+        ITask task = TaskFactory.getInstance().createUpdateCategoryTask(this, (App) this.getApplication());
+        task.run(categoriaDto);
+
 
     }
 

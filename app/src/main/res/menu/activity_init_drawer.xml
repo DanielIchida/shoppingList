@@ -16,7 +16,7 @@
             android:title="Administrar Tiendas" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Informes">
         <menu>
             <item
                 android:id="@+id/nav_gastos"
@@ -24,5 +24,14 @@
                 android:title="Control de gastos" />
         </menu>
     </item>
+
+    <item android:id="@+id/menu_sesion" android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_sesion"
+                android:title="" />
+        </menu>
+    </item>
+
 
 </menu>

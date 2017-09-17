@@ -2,13 +2,18 @@ package com.shop.oasaustre.shoppinglist.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.dialog.CategoriaDialog;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
 import com.shop.oasaustre.shoppinglist.activity.task.LoadCategoriesTask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
+import com.shop.oasaustre.shoppinglist.adapter.firebase.CategoriaAdapter;
+import com.shop.oasaustre.shoppinglist.app.App;
 
 public class CategoriaActivity extends AppCompatActivity {
 
@@ -60,12 +65,19 @@ public class CategoriaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LoadCategoriesTask loadCategoriesTask = new LoadCategoriesTask(this);
-        loadCategoriesTask.execute();
+        ITask task = TaskFactory.getInstance().createLoadCategoriesTask(this,(App) this.getApplication());
+        task.run();
     }
     @Override
     protected void onPause() {
         super.onPause();
+        App app = (App) this.getApplication();
+        if(app.isUserActive()){
+            RecyclerView rvCategoria = (RecyclerView) this.findViewById(R.id.rv_categoriaList);
+            CategoriaAdapter categoriaAdapter = (CategoriaAdapter) rvCategoria.getAdapter();
+            categoriaAdapter.deactivateListener();
+        }
+
     }
     @Override
     protected void onStop() {

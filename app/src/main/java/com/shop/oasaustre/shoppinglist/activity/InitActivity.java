@@ -3,6 +3,7 @@ package com.shop.oasaustre.shoppinglist.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,18 +24,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteArticlesDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.ListDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.VoiceResultDialog;
-import com.shop.oasaustre.shoppinglist.activity.task.ArticleInShoppingListTask;
-import com.shop.oasaustre.shoppinglist.activity.task.FindBarcodeTask;
-import com.shop.oasaustre.shoppinglist.activity.task.LoadArticlesTask;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
+import com.shop.oasaustre.shoppinglist.adapter.firebase.ListaCompraAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.app.SettingsHelper;
+import com.shop.oasaustre.shoppinglist.app.User;
+import com.shop.oasaustre.shoppinglist.app.VolleySingleton;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 
@@ -44,10 +51,12 @@ import java.util.Locale;
 public class InitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_init);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,10 +68,11 @@ public class InitActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        initilizeLogin(navigationView.getHeaderView(0));
+        configureCloseSession(navigationView);
 
         initializeTextFind();
         initializeUI();
@@ -120,11 +130,35 @@ public class InitActivity extends AppCompatActivity
             navTiendas();
         } else if (id == R.id.nav_gastos) {
             navGastos();
+        } else if (id == R.id.nav_sesion) {
+            navCloseSession();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void configureCloseSession(NavigationView navigationView){
+
+        User userSession = ((App) this.getApplication()).getUser();
+        if(userSession != null){
+            Menu menu = navigationView.getMenu();
+            MenuItem menuSesion = menu.findItem(R.id.menu_sesion);
+            menuSesion.setTitle("Sesion");
+            MenuItem menuClose = menu.findItem(R.id.nav_sesion);
+            menuClose.setTitle("Cerrar Session");
+            menuClose.setIcon(R.drawable.ic_euro_symbol);
+        }else{
+            Menu menu = navigationView.getMenu();
+            MenuItem menuSesion = menu.findItem(R.id.menu_sesion);
+            menuSesion.setTitle("");
+            MenuItem menuClose = menu.findItem(R.id.nav_sesion);
+            menuClose.setTitle("");
+            menuClose.setIcon(null);
+        }
+
+
     }
 
     private void lanzarSettings(){
@@ -157,6 +191,34 @@ public class InitActivity extends AppCompatActivity
     private void navGastos(){
         Intent intent = new Intent(this, GastosMensualesActivity.class);
         startActivity(intent);
+    }
+
+    private void navLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void navCloseSession(){
+        FirebaseAuth.getInstance().signOut();
+        ((App) this.getApplication()).setUser(null);
+        Intent intent = new Intent(this, InitActivity.class);
+        startActivity(intent);
+        /*initilizeLogin(navigationView);
+        configureCloseSession(navigationView);*/
+
+        /*AuthUI.getInstance().signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        Intent i = new Intent(InitActivity.this,InitActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                        finish();
+                    }
+                });*/
     }
 
 
@@ -224,8 +286,10 @@ public class InitActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 AutoCompleteTextView textFind = (AutoCompleteTextView) findViewById(R.id.txtBuscarArticulo);
-                ArticleInShoppingListTask task = new ArticleInShoppingListTask(InitActivity.this);
-                task.execute(textFind.getText().toString());
+
+                ITask task = TaskFactory.getInstance().createArticleInShoppingListTask(InitActivity.this,
+                        ((App) InitActivity.this.getApplication()));
+                task.run(textFind.getText().toString());
                 textFind.setText(AppConstant.BLANK);
             }
         });
@@ -249,6 +313,39 @@ public class InitActivity extends AppCompatActivity
         });
 
 
+    }
+
+    private void initilizeLogin(View headerLayout){
+        // Foto de usuario
+        User usuario = ((App) this.getApplication()).getUser();
+        TextView txtLogin = (TextView) headerLayout.findViewById(R.id.txtLogin);
+        txtLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navLogin();
+            }
+        });
+        if(usuario != null){
+            Uri urlImagen = usuario.getImage();
+            String username = usuario.getName();
+            if (urlImagen != null) {
+                NetworkImageView fotoUsuario = (NetworkImageView)
+                        headerLayout.findViewById(R.id.imageView);
+                fotoUsuario.setImageUrl(urlImagen.toString(),
+                        VolleySingleton.getInstance(this).getLectorImagenes());
+            }
+
+            if(username != null && !username.isEmpty()){
+                txtLogin.setText(username);
+            } else{
+                txtLogin.setText(usuario.getEmail());
+            }
+        }else{
+            txtLogin.setText("Registrarse/Iniciar Sesión");
+            VolleySingleton.getInstance(this).getColaPeticiones().getCache().clear();
+
+
+        }
     }
 
     @Override
@@ -300,8 +397,8 @@ public class InitActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AppConstant.RES_UPDATE_ARTICLE && resultCode == RESULT_OK) {
-            LoadArticlesTask task = new LoadArticlesTask(this);
-            task.execute();
+            ITask task = TaskFactory.getInstance().createLoadArticlesTask(this, ((App) this.getApplication()));
+            task.run();
         }else if(requestCode == AppConstant.RES_VOICE){
             if(resultCode == RESULT_OK && data != null){
                 getResultVoiceWords(data);
@@ -317,8 +414,8 @@ public class InitActivity extends AppCompatActivity
         else{
             IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (scanResult != null) {
-                FindBarcodeTask task = new FindBarcodeTask(this);
-                task.execute(scanResult.getContents());
+                ITask task = TaskFactory.getInstance().createFindBarcodeTask(this,((App) this.getApplication()));
+                task.run(scanResult.getContents());
             }
         }
     }
@@ -368,14 +465,20 @@ public class InitActivity extends AppCompatActivity
         Lista listaActive = ((App) this.getApplication()).getListaActive();
         getSupportActionBar().setTitle(listaActive.getNombre());
 
-        LoadArticlesTask task = new LoadArticlesTask(this);
-        task.execute();
+        ITask task = TaskFactory.getInstance().createLoadArticlesTask(this, ((App) this.getApplication()));
+        task.run();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        RecyclerView rvListaCompra = (RecyclerView) this.findViewById(R.id.rv_listaCompraActual);
+        if(((App) this.getApplication()).isUserActive()){
+            ((ListaCompraAdapter) rvListaCompra.getAdapter()).deactivateListener();
+        }
+
+
     }
 
     @Override

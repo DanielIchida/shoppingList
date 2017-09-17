@@ -12,4 +12,24 @@
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
     <string name="deleteArticles">¿Estás seguro que deseas eliminar los artículos seleccionados?</string>
+
+    <string name="tw__login_btn_txt">Twitter</string>
+
+    <string name="login_msg_email">Correo electrónico</string>
+    <string name="login_msg_password">Contraseña</string>
+    <string name="login_msg_signin">Iniciar sesión</string>
+    <string name="login_msg_signup">Registrarse</string>
+    <string name="error_connection_failed">Error, fallo en la conexión </string>
+    <string name="error_google">Error al iniciar sesión con Google</string>
+    <string name="error_empty">Por favor ingrese todos los campos</string>
+    <string name="error_cancelled">Error, inicio de sesión cancelado</string>
+
+    <string name="facebook_app_id">717075015151531</string>
+    <string name="fb_login_protocol_scheme">fb717075015151531</string>
+
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">UrzklVkWvZQoDpNJXJ1tCVYpm</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">NPynTOZ8SRzA1nirUmtJ0EcFUV4IdBnLoSk2eZkgLnBvgrOxNd</string>
+
+
+
 </resources>

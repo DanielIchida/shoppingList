@@ -3,9 +3,15 @@ package com.shop.oasaustre.shoppinglist.app;
 import android.app.Application;
 import android.util.Log;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoMaster;
 import com.shop.oasaustre.shoppinglist.db.dao.DaoSession;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
+import com.shop.oasaustre.shoppinglist.db.service.IListaService;
+import com.shop.oasaustre.shoppinglist.db.service.ServiceFactory;
+import com.shop.oasaustre.shoppinglist.dto.firebase.CategoriaDto;
+import com.shop.oasaustre.shoppinglist.dto.firebase.ListaDto;
+import com.shop.oasaustre.shoppinglist.dto.firebase.TiendaDto;
 
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.query.Query;
@@ -32,18 +38,29 @@ public class App extends Application {
 
     private Lista listaCompraActive;
 
+    private ListaDto listaCompraFBActive;
+
     private Settings settings;
 
     private ScheduledThreadPoolExecutor exec;
 
     private ScheduledFuture<?> scheduled;
 
+    private User user;
+
+    private FirebaseDatabase database;
+
+    private List<CategoriaDto> listaCategoriaDto;
+
+    private List<TiendaDto> listaTiendaDto;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
         settings = new Settings();
+
+        database = FirebaseDatabase.getInstance();
 
         try {
 
@@ -103,8 +120,55 @@ public class App extends Application {
         this.scheduled = scheduled;
     }
 
+    public FirebaseDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(FirebaseDatabase database) {
+        this.database = database;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public boolean isUserActive(){
+        return (user != null);
+    }
+
+    public ListaDto getListaaFBActive() {
+        return listaCompraFBActive;
+    }
+
+    public void setListaFBActive(ListaDto listaCompraFBActive) {
+        this.listaCompraFBActive = listaCompraFBActive;
+    }
+
+    public List<CategoriaDto> getListaCategoriaDto() {
+        return listaCategoriaDto;
+    }
+
+    public void setListaCategoriaDto(List<CategoriaDto> listaCategoriaDto) {
+        this.listaCategoriaDto = listaCategoriaDto;
+    }
+
+    public List<TiendaDto> getListaTiendaDto() {
+        return listaTiendaDto;
+    }
+
+    public void setListaTiendaDto(List<TiendaDto> listaTiendaDto) {
+        this.listaTiendaDto = listaTiendaDto;
+    }
+
     private void loadShoppingListActive(){
-        List<Lista> currentList = null;
+
+        IListaService listaService = ServiceFactory.getInstance().createListaService(this,"local");
+        listaService.getListaActive();
+        /*List<Lista> currentList = null;
         WhereCondition.StringCondition condition = new WhereCondition.StringCondition("activo = 1");
         Query<Lista> query = daoSession.getListaDao().queryBuilder().where(condition).build();
         currentList = query.list();
@@ -113,10 +177,10 @@ public class App extends Application {
             listaCompraActive = currentList.get(0);
         }else{
             createInitialShoppingList();
-        }
+        }*/
     }
 
-    private void createInitialShoppingList(){
+    /*private void createInitialShoppingList(){
 
         try {
             daoSession.getDatabase().beginTransaction();
@@ -142,7 +206,7 @@ public class App extends Application {
             daoSession.getDatabase().endTransaction();
         }
 
-    }
+    }*/
 
     private void copyDataBase(String dbname) throws IOException {
         // Open your local db as the input stream

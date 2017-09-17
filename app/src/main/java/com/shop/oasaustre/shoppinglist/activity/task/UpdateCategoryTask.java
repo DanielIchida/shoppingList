@@ -12,7 +12,7 @@ import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
  * Created by oasaustre on 3/12/16.
  */
 
-    public class UpdateCategoryTask extends AsyncTask<Categoria, Void,Categoria> {
+    public class UpdateCategoryTask extends AsyncTask<Categoria, Void,Categoria> implements ITask{
 
     private String errors;
     private Activity activity;
@@ -41,5 +41,10 @@ import com.shop.oasaustre.shoppinglist.db.service.CategoriaService;
     protected void onPostExecute(Categoria categoria) {
 
         activity.finish();
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute((Categoria)params[0]);
     }
 }

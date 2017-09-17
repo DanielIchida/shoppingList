@@ -28,7 +28,7 @@ import java.util.List;
  * Created by oasaustre on 3/12/16.
  */
 
-public class ListaCompraService {
+public class ListaCompraService implements IListaCompraService{
 
     private App app;
     public ListaCompraService(App app){

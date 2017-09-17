@@ -20,7 +20,7 @@ import java.util.List;
  * Created by oasaustre on 8/12/16.
  */
 
-public class ArticuloService {
+public class ArticuloService implements IArticuloService{
 
     private App app;
 

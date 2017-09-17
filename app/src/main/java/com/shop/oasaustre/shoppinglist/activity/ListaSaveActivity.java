@@ -7,9 +7,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
 import com.shop.oasaustre.shoppinglist.activity.task.UpdateListaTask;
+import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
+import com.shop.oasaustre.shoppinglist.dto.firebase.ListaDto;
 
 public class ListaSaveActivity extends AppCompatActivity {
 
@@ -40,7 +44,13 @@ public class ListaSaveActivity extends AppCompatActivity {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateLista();
+                App app = (App) ListaSaveActivity.this.getApplication();
+                if(app.isUserActive()){
+                    updateListaFB();
+                }else{
+                    updateLista();
+                }
+
             }
         });
 
@@ -71,8 +81,30 @@ public class ListaSaveActivity extends AppCompatActivity {
         lista.setActivo(new Long(fieldActivo.getText().toString()));
         lista.setFecha(new Long(fieldFecha.getText().toString()));
 
-        UpdateListaTask task = new UpdateListaTask(this);
-        task.execute(lista);
+        ITask task = TaskFactory.getInstance().createUpdateListaTask(this,(App) this.getApplication());
+        task.run(lista);
+        ;
+
+    }
+
+
+    private void updateListaFB(){
+        ListaDto listaDto = null;
+
+        EditText fieldListaTxt = (EditText) this.findViewById(R.id.fieldListaTxt);
+        TextView fieldIdLista = (TextView) this.findViewById(R.id.fieldIdLista);
+        TextView fieldActivo = (TextView) this.findViewById(R.id.fieldActivo);
+        TextView fieldFecha = (TextView) this.findViewById(R.id.fieldFecha);
+
+        listaDto = new ListaDto();
+
+        listaDto.setNombre(fieldListaTxt.getText().toString());
+        listaDto.setUid(fieldIdLista.getText().toString());
+        listaDto.setFecha(new Long(fieldFecha.getText().toString()));
+
+        ITask task = TaskFactory.getInstance().createUpdateListaTask(this,(App) this.getApplication());
+        task.run(listaDto);
+
 
     }
 

@@ -23,7 +23,7 @@ import java.util.List;
  * Created by oasaustre on 3/12/16.
  */
 
-public class LoadCategoriesTask extends AsyncTask<Void,Void,List<Categoria>> {
+public class LoadCategoriesTask extends AsyncTask<Void,Void,List<Categoria>> implements ITask {
 
     private Activity activity = null;
     private CategoriaAdapter adapter = null;
@@ -84,5 +84,10 @@ public class LoadCategoriesTask extends AsyncTask<Void,Void,List<Categoria>> {
         intent.putExtra(AppConstant.TITLE_INTENT,categoria.getNombre());
         activity.startActivity(intent);
 
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute();
     }
 }

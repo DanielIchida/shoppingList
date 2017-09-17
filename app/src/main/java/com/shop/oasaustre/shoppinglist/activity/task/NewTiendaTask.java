@@ -15,7 +15,7 @@ import com.shop.oasaustre.shoppinglist.db.service.TiendaService;
  * Created by oasaustre on 3/12/16.
  */
 
-    public class NewTiendaTask extends AsyncTask<String, Void,Tienda> {
+    public class NewTiendaTask extends AsyncTask<String, Void,Tienda> implements ITask{
 
     private String errors;
     private TiendaDialog dialog;
@@ -55,5 +55,10 @@ import com.shop.oasaustre.shoppinglist.db.service.TiendaService;
         }
 
         dialog.dismiss();
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute((String) params[0]);
     }
 }

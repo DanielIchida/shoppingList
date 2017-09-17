@@ -21,7 +21,7 @@ import com.shop.oasaustre.shoppinglist.dto.ArticuloDetalleDto;
  * Created by oasaustre on 4/12/16.
  */
 
-public class ArticleDetailTask  extends AsyncTask<Long,Void,ArticuloDetalleDto> {
+public class ArticleDetailTask  extends AsyncTask<Long,Void,ArticuloDetalleDto> implements ITask{
 
     private Activity activity = null;
 
@@ -116,5 +116,10 @@ public class ArticleDetailTask  extends AsyncTask<Long,Void,ArticuloDetalleDto> 
 
 
 
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute((Long) params[0]);
     }
 }
