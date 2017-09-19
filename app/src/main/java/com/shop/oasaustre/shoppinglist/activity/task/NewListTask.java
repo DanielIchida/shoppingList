@@ -17,7 +17,7 @@ import com.shop.oasaustre.shoppinglist.db.service.ListaService;
  * Created by oasaustre on 3/12/16.
  */
 
-public class NewListTask extends AsyncTask<String, Void,Lista> {
+public class NewListTask extends AsyncTask<String, Void,Lista> implements ITask{
 
     private Activity activity;
     private ListDialog listDialog;
@@ -67,5 +67,10 @@ public class NewListTask extends AsyncTask<String, Void,Lista> {
         }
 
         listDialog.dismiss();
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute((String) params[0]);
     }
 }

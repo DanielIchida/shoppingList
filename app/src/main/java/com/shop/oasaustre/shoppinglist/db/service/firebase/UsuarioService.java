@@ -79,13 +79,25 @@ public class UsuarioService implements IUsuarioService{
                     currentUserReference.setValue(user);
 
                     Map<String,Object> listaCompartida = new HashMap<String,Object>();
-                    Map<String,Object> usuariosLista = new HashMap<String,Object>();
+                    final Map<String,Object> usuariosLista = new HashMap<String,Object>();
 
                     usuariosLista.put(user.getUid(),true);
 
                     listaCompartida.put(key,usuariosLista);
 
-                    database.getReference().child(SHARE).setValue(listaCompartida);
+                    database.getReference().child(SHARE).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(!dataSnapshot.exists()){
+                                dataSnapshot.getRef().setValue(usuariosLista);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     executeInit();
 
 

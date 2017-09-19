@@ -93,7 +93,6 @@ public class ListaSaveActivity extends AppCompatActivity {
 
         EditText fieldListaTxt = (EditText) this.findViewById(R.id.fieldListaTxt);
         TextView fieldIdLista = (TextView) this.findViewById(R.id.fieldIdLista);
-        TextView fieldActivo = (TextView) this.findViewById(R.id.fieldActivo);
         TextView fieldFecha = (TextView) this.findViewById(R.id.fieldFecha);
 
         listaDto = new ListaDto();

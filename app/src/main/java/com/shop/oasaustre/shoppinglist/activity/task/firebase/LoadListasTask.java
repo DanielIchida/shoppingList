@@ -12,6 +12,7 @@ import com.google.firebase.database.Query;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.task.ITask;
 import com.shop.oasaustre.shoppinglist.activity.task.ListaActivaTask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
 import com.shop.oasaustre.shoppinglist.adapter.firebase.ListaAdapter;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
@@ -51,9 +52,8 @@ public class LoadListasTask implements ITask {
                 ListaAdapter adapter = (ListaAdapter)((RecyclerView) view.getParent()).getAdapter();
                 ListaDto lista = adapter.getLista().get(positionItemSelect);
 
-                ListaActivaTask listaActivaTask = new ListaActivaTask(activity);
-                //listaActivaTask.execute(lista);
-
+                ITask task = TaskFactory.getInstance().createListaActivaTask(activity, (App) activity.getApplication());
+                task.run(lista);
             }
         });
 

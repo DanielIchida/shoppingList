@@ -14,7 +14,7 @@ import com.shop.oasaustre.shoppinglist.dto.ListaActivaDto;
  * Created by oasaustre on 3/12/16.
  */
 
-public class ListaActivaTask extends AsyncTask<Lista, Void,ListaActivaDto> {
+public class ListaActivaTask extends AsyncTask<Lista, Void,ListaActivaDto> implements ITask{
 
     private Activity activity;
 
@@ -43,5 +43,10 @@ public class ListaActivaTask extends AsyncTask<Lista, Void,ListaActivaDto> {
             intent = new Intent(activity, InitActivity.class);
             activity.startActivity(intent);
         }
+    }
+
+    @Override
+    public void run(Object... params) {
+        this.execute((Lista) params[0]);
     }
 }

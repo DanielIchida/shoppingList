@@ -79,7 +79,7 @@ public class LoadArticlesTask implements ITask {
 
         DividerItemDecoration did = new DividerItemDecoration(activity,DividerItemDecoration.VERTICAL);
 
-        Lista listaActive = ((App) activity.getApplication()).getListaActive();
+        ListaDto listaActive = ((App) activity.getApplication()).getListaaFBActive();
 
         ((InitActivity)activity).getSupportActionBar().setTitle(listaActive.getNombre());
 

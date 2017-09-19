@@ -1,5 +1,6 @@
 package com.shop.oasaustre.shoppinglist.activity;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -41,6 +42,7 @@ import com.shop.oasaustre.shoppinglist.app.User;
 import com.shop.oasaustre.shoppinglist.db.entity.Usuario;
 import com.shop.oasaustre.shoppinglist.db.service.IUsuarioService;
 import com.shop.oasaustre.shoppinglist.db.service.ServiceFactory;
+import com.shop.oasaustre.shoppinglist.service.ParameterService;
 import com.shop.oasaustre.shoppinglist.util.WaveHelper;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -282,7 +284,23 @@ public class LoginActivity extends AppCompatActivity {
 
             usuarioService.createUser(usuario);
 
+            if(!isServiceRunning()){
+                this.startService(new Intent(this, ParameterService.class));
+            }
+
+
+
 
         }
+    }
+
+    private boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if(ParameterService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

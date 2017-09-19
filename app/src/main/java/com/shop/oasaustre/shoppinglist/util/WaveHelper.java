@@ -7,6 +7,7 @@ package com.shop.oasaustre.shoppinglist.util;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import com.gelitenight.waveview.library.WaveView;
@@ -43,7 +44,7 @@ public class WaveHelper {
         this.initAnimators.add(waterLevelAnim);
         ObjectAnimator amplitudeAnim = ObjectAnimator.ofFloat(this.mWaveView, "amplitudeRatio", new float[]{0.01f, 0.02f});
         amplitudeAnim.setRepeatCount(-1);
-        amplitudeAnim.setRepeatMode(2);
+        amplitudeAnim.setRepeatMode(ValueAnimator.REVERSE);
         amplitudeAnim.setDuration(5000);
         amplitudeAnim.setInterpolator(new LinearInterpolator());
         this.initAnimators.add(amplitudeAnim);
@@ -63,7 +64,7 @@ public class WaveHelper {
         this.finishAanimators.add(waterLevelAnim);
         ObjectAnimator amplitudeAnim = ObjectAnimator.ofFloat(this.mWaveView, "amplitudeRatio", new float[]{0.01f, 0.02f});
         amplitudeAnim.setRepeatCount(-1);
-        amplitudeAnim.setRepeatMode(2);
+        amplitudeAnim.setRepeatMode(ValueAnimator.REVERSE);
         amplitudeAnim.setDuration(5000);
         amplitudeAnim.setInterpolator(new LinearInterpolator());
         this.finishAanimators.add(amplitudeAnim);

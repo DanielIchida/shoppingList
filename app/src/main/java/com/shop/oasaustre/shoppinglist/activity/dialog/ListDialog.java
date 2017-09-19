@@ -12,7 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shop.oasaustre.shoppinglist.R;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
 import com.shop.oasaustre.shoppinglist.activity.task.NewListTask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
+import com.shop.oasaustre.shoppinglist.app.App;
 
 /**
  * Created by oasaustre on 3/12/16.
@@ -70,10 +73,12 @@ public class ListDialog extends DialogFragment {
 
 
     private void createNewList(EditText fieldNewList){
-
         if(fieldNewList.getText().length() > 0){
-            NewListTask newListTask = new NewListTask(getActivity(),this,activo);
-            newListTask.execute(fieldNewList.getText().toString());
+            ITask task = TaskFactory.getInstance().createNewListTask(getActivity(),
+                    (App) getActivity().getApplication(),
+                    this,
+                    activo);
+            task.run(fieldNewList.getText().toString());
         }else{
             Toast.makeText(getActivity(),"El campo de texto está vacío",Toast.LENGTH_LONG);
         }

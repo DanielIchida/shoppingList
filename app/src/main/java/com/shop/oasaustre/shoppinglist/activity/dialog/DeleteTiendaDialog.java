@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.task.DelTiendaTask;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
+import com.shop.oasaustre.shoppinglist.app.App;
 
 /**
  * Created by oasaustre on 7/12/16.
@@ -47,8 +50,11 @@ public class DeleteTiendaDialog extends DialogFragment {
     }
 
     private void executeRemoveTienda(){
-        DelTiendaTask task = new DelTiendaTask(getActivity(),this,delPosition);
-        task.execute();
+        ITask task = TaskFactory.getInstance().createDelTiendaTask(getActivity(),
+                (App) getActivity().getApplication(),
+                this,
+                delPosition);
+        task.run();
     }
 }
 

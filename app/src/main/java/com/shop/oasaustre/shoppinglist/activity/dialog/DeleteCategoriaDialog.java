@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.task.DelCategoriaTask;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
+import com.shop.oasaustre.shoppinglist.app.App;
 
 /**
  * Created by oasaustre on 7/12/16.
@@ -47,8 +50,11 @@ public class DeleteCategoriaDialog extends DialogFragment {
     }
 
     private void executeRemoveCategoria(){
-        DelCategoriaTask task = new DelCategoriaTask(getActivity(),this,delPosition);
-        task.execute();
+        ITask task = TaskFactory.getInstance().createDelCategoriaTask(getActivity(),
+                (App) getActivity().getApplication(),
+                this,
+                delPosition);
+        task.run();
     }
 }
 

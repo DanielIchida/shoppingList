@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.oasaustre.shoppinglist.R;
@@ -55,11 +56,12 @@ import com.shop.oasaustre.shoppinglist.dto.firebase.CategoriaDto;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()){
-                    String key = dataSnapshot.getRef().push().getKey();
+                    DatabaseReference child = dataSnapshot.getRef().push();
+                    String key = child.getKey();
                     CategoriaDto categoriaDto = new CategoriaDto();
                     categoriaDto.setNombre((String) params[0]);
                     categoriaDto.setUid(key);
-                    dataSnapshot.getRef().setValue(categoriaDto);
+                    child.setValue(categoriaDto);
                     onPostExecute();
                 }
             }

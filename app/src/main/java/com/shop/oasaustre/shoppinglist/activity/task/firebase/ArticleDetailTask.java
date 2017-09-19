@@ -103,7 +103,7 @@ public class ArticleDetailTask implements ITask{
 
 
 
-        if(app.getListaTiendaDto() != null){
+        if(listaCompra.getCategoria() != null){
             TiendaDto tiendaDto = new TiendaDto();
             tiendaDto.setUid((String) listaCompra.getTienda().get("idTienda"));
             tiendaDto.setNombre((String) listaCompra.getTienda().get("tiendaName"));

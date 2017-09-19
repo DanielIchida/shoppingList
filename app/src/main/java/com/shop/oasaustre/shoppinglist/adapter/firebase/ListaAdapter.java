@@ -173,7 +173,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
                     Intent intent = new Intent(context, ListaSaveActivity.class);
                     intent.putExtra(AppConstant.ID_INTENT, lista.getUid());
                     intent.putExtra(AppConstant.TITLE_INTENT,lista.getNombre());
-                    intent.putExtra(AppConstant.ACTIVE_INTENT, lista.getActivo());
+                    intent.putExtra(AppConstant.ACTIVE_INTENT, 1l);
                     intent.putExtra(AppConstant.FECHA_INTENT,lista.getFecha());
                     context.startActivity(intent);
                 }

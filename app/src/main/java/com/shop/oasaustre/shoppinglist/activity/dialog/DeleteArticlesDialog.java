@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.task.DelArticlesShoppingListTask;
+import com.shop.oasaustre.shoppinglist.activity.task.ITask;
+import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
+import com.shop.oasaustre.shoppinglist.app.App;
 
 /**
  * Created by oasaustre on 7/12/16.
@@ -35,8 +38,9 @@ public class DeleteArticlesDialog extends DialogFragment {
     }
 
     private void executeRemoveArticles(){
-        DelArticlesShoppingListTask task = new DelArticlesShoppingListTask(getActivity(),this);
-        task.execute();
+        ITask task = TaskFactory.getInstance().createDelArticlesShoppingListTask(getActivity(),
+                (App) getActivity().getApplication(), this);
+        task.run();
     }
 }
 

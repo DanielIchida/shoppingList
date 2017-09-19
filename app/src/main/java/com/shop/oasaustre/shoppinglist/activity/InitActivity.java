@@ -464,6 +464,7 @@ public class InitActivity extends AppCompatActivity
 
         Lista listaActive = ((App) this.getApplication()).getListaActive();
         getSupportActionBar().setTitle(listaActive.getNombre());
+        getSupportActionBar().setIcon(R.drawable.ic_history);
 
         ITask task = TaskFactory.getInstance().createLoadArticlesTask(this, ((App) this.getApplication()));
         task.run();
