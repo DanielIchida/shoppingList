@@ -8,7 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.task.ITask;
 import com.shop.oasaustre.shoppinglist.activity.task.ListaActivaTask;
@@ -19,6 +22,7 @@ import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 import com.shop.oasaustre.shoppinglist.db.service.ListaService;
 import com.shop.oasaustre.shoppinglist.dto.firebase.ListaDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +34,7 @@ public class LoadListasTask implements ITask {
     private Activity activity = null;
     private ListaAdapter adapter = null;
     private final static String LIST = "lista";
+    private final static String SHARE = "compartida";
 
     public LoadListasTask(Activity activity){
         this.activity = activity;
@@ -37,11 +42,11 @@ public class LoadListasTask implements ITask {
 
 
 
-    protected void onPostExecute(Query reference) {
+    protected void onPostExecute(Query reference,List<String> lstKeyUserList) {
 
         DividerItemDecoration did = new DividerItemDecoration(activity,DividerItemDecoration.VERTICAL);
 
-        adapter = new ListaAdapter(activity, reference);
+        adapter = new ListaAdapter(activity, reference,lstKeyUserList);
 
         adapter.setOnClickListener(new View.OnClickListener(){
 
@@ -68,10 +73,29 @@ public class LoadListasTask implements ITask {
 
     @Override
     public void run(Object... params) {
-        Query queryList = null;
-        App app = (App) activity.getApplication();
 
-        queryList = app.getDatabase().getReference().child(LIST).orderByChild("fecha");
-        onPostExecute(queryList);
+        Query queryShareUser = null;
+        final App app = (App) activity.getApplication();
+
+        queryShareUser = app.getDatabase().getReference().child(SHARE).orderByChild(app.getUser().getUid()).startAt(false).endAt(true);
+        queryShareUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> lstKeyUserList = new ArrayList<String>();
+                Query queryList = null;
+                for(DataSnapshot child: dataSnapshot.getChildren()){
+                    lstKeyUserList.add(child.getKey());
+                }
+
+                queryList = app.getDatabase().getReference().child(LIST).orderByChild("fecha");
+                onPostExecute(queryList,lstKeyUserList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

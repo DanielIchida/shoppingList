@@ -10,6 +10,7 @@ public class ListaDto {
     private String nombre;
     private Long fecha;
     private String uidUsuario;
+    private Boolean share;
     private Long activo;
 
     public String getUid() {
@@ -50,5 +51,13 @@ public class ListaDto {
 
     public void setUidUsuario(String uidUsuario) {
         this.uidUsuario = uidUsuario;
+    }
+
+    public Boolean getShare() {
+        return share;
+    }
+
+    public void setShare(Boolean share) {
+        this.share = share;
     }
 }

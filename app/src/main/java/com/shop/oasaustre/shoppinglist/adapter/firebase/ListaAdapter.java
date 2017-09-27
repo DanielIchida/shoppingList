@@ -1,5 +1,6 @@
 package com.shop.oasaustre.shoppinglist.adapter.firebase;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.activity.ListaSaveActivity;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteListaDialog;
+import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.constant.AppConstant;
 import com.shop.oasaustre.shoppinglist.db.entity.Lista;
 import com.shop.oasaustre.shoppinglist.dto.firebase.ListaDto;
@@ -41,11 +43,14 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
     private View.OnClickListener onClickListener;
     private SimpleDateFormat dateFormat;
     private Query reference;
+    private List<String> lstKeyUserList;
+    private static final String SHARE = "compartida";
 
 
-    public ListaAdapter(Context context, Query reference) {
+    public ListaAdapter(Context context, Query reference,List<String> lstKeyUserList) {
         this.context = context;
         this.reference = reference;
+        this.lstKeyUserList = lstKeyUserList;
         dateFormat = new SimpleDateFormat(AppConstant.LIST_FORMAT_DATE);
         inflador = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -60,23 +65,45 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
 
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int i) {
-        ListaDto currentLista = lista.get(i);
-        Date listaDateCreated = null;
+    public void onBindViewHolder(final ViewHolder holder, final int i) {
+        final ListaDto currentLista = lista.get(i);
 
-        holder.getIdLista().setText(currentLista.getUid());
-        holder.getTituloLista().setText(currentLista.getNombre());
 
-        listaDateCreated =  new Date(currentLista.getFecha());
-        if(listaDateCreated != null){
-            holder.getFechaCompra().setText(dateFormat.format(listaDateCreated));
-        }
 
-        if (i % 2 == 0) {
-            holder.getLayout().setBackground(ContextCompat.getDrawable(context,R.drawable.line_divider_even));
-        } else {
-            holder.getLayout().setBackground(ContextCompat.getDrawable(context,R.drawable.line_divider_odd));
-        }
+
+        App app = (App) ((Activity) context).getApplication();
+        app.getDatabase().getReference().child(SHARE).child(currentLista.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Date listaDateCreated = null;
+
+                holder.getIdLista().setText(currentLista.getUid());
+                holder.getTituloLista().setText(currentLista.getNombre());
+                listaDateCreated =  new Date(currentLista.getFecha());
+                if(listaDateCreated != null){
+                    holder.getFechaCompra().setText(dateFormat.format(listaDateCreated));
+                }
+
+                if (i % 2 == 0) {
+                    holder.getLayout().setBackground(ContextCompat.getDrawable(context,R.drawable.line_divider_even));
+                } else {
+                    holder.getLayout().setBackground(ContextCompat.getDrawable(context,R.drawable.line_divider_odd));
+                }
+
+                if(dataSnapshot.getChildrenCount()>1){
+                    holder.getIconoShare().setVisibility(View.VISIBLE);
+                }else{
+                    holder.getIconoShare().setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 
@@ -106,7 +133,10 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
 
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             listaDto = child.getValue(ListaDto.class);
-            lista.add(listaDto);
+            if(lstKeyUserList.contains(listaDto.getUid())){
+                lista.add(listaDto);
+            }
+
         }
 
         notifyDataSetChanged();
@@ -136,6 +166,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
         private ImageView iconoDel;
         private ImageView iconoEdit;
         private RelativeLayout layout;
+        private ImageView iconoShare;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -145,6 +176,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
             fechaCompra = (TextView)itemView.findViewById(R.id.txtFechaLista);
             iconoDel = (ImageView)itemView.findViewById(R.id.imgDeleteLista);
             iconoEdit = (ImageView)itemView.findViewById(R.id.imgEditLista);
+            iconoShare = (ImageView)itemView.findViewById(R.id.imgShare);
 
 
             iconoDel.setOnClickListener(new View.OnClickListener() {
@@ -229,7 +261,13 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolder> 
             this.layout = layout;
         }
 
+        public ImageView getIconoShare() {
+            return iconoShare;
+        }
 
+        public void setIconoShare(ImageView iconoShare) {
+            this.iconoShare = iconoShare;
+        }
     }
 
     public View.OnClickListener getOnClickListener() {

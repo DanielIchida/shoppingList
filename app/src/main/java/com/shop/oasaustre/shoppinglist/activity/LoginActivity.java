@@ -3,6 +3,7 @@ package com.shop.oasaustre.shoppinglist.activity;
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.auth.UserInfo;
 import com.shop.oasaustre.shoppinglist.R;
 import com.shop.oasaustre.shoppinglist.app.App;
 import com.shop.oasaustre.shoppinglist.app.User;
@@ -272,9 +274,23 @@ public class LoginActivity extends AppCompatActivity {
             user.setUid(currentUser.getUid());
             user.setImage(currentUser.getPhotoUrl());
 
+
+
             ((App) this.getApplication()).setUser(user);
 
             IUsuarioService usuarioService = ServiceFactory.getInstance().create(this,((App) this.getApplication()),"firebase");
+            for (UserInfo profile : currentUser.getProviderData()) {
+                // Id of the provider (ex: google.com)
+                String providerId = profile.getProviderId();
+
+                // UID specific to the provider
+                String uid = profile.getUid();
+
+                // Name, email address, and profile photo Url
+                String name = profile.getDisplayName();
+                String email = profile.getEmail();
+                Uri photoUrl = profile.getPhotoUrl();
+            };
 
             Usuario usuario = new Usuario();
             usuario.setUid(user.getUid());

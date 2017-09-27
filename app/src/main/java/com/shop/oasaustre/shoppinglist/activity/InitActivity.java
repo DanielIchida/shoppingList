@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -27,6 +28,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -132,6 +136,8 @@ public class InitActivity extends AppCompatActivity
             navGastos();
         } else if (id == R.id.nav_sesion) {
             navCloseSession();
+        } else if (id == R.id.nav_share){
+            navShare();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -145,14 +151,22 @@ public class InitActivity extends AppCompatActivity
         if(userSession != null){
             Menu menu = navigationView.getMenu();
             MenuItem menuSesion = menu.findItem(R.id.menu_sesion);
+            MenuItem menuShare = menu.findItem(R.id.menu_share);
             menuSesion.setTitle("Sesion");
+            menuShare.setTitle("Compartir");
+            MenuItem menuNavShare = menu.findItem(R.id.nav_share);
             MenuItem menuClose = menu.findItem(R.id.nav_sesion);
+            menuNavShare.setTitle("Compartir Lista");
             menuClose.setTitle("Cerrar Session");
             menuClose.setIcon(R.drawable.ic_euro_symbol);
         }else{
             Menu menu = navigationView.getMenu();
             MenuItem menuSesion = menu.findItem(R.id.menu_sesion);
+            MenuItem menuShare = menu.findItem(R.id.menu_share);
             menuSesion.setTitle("");
+            menuShare.setTitle("");
+            MenuItem menuNavShare = menu.findItem(R.id.nav_share);
+            menuNavShare.setTitle("");
             MenuItem menuClose = menu.findItem(R.id.nav_sesion);
             menuClose.setTitle("");
             menuClose.setIcon(null);
@@ -199,14 +213,14 @@ public class InitActivity extends AppCompatActivity
     }
 
     private void navCloseSession(){
-        FirebaseAuth.getInstance().signOut();
+        //FirebaseAuth.getInstance().signOut();
         ((App) this.getApplication()).setUser(null);
         Intent intent = new Intent(this, InitActivity.class);
         startActivity(intent);
         /*initilizeLogin(navigationView);
         configureCloseSession(navigationView);*/
 
-        /*AuthUI.getInstance().signOut(this)
+        AuthUI.getInstance().signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -218,7 +232,13 @@ public class InitActivity extends AppCompatActivity
                         startActivity(i);
                         finish();
                     }
-                });*/
+                });
+    }
+
+
+    private void navShare(){
+        Intent intent = new Intent(this, ShareListActivity.class);
+        startActivity(intent);
     }
 
 

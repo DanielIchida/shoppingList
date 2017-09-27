@@ -52,24 +52,18 @@ public class UsuarioService implements IUsuarioService{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()) {
-                    Map<String,Object> lista = new HashMap<String,Object>();
-                    Map<String,Object> listaAttributes = new HashMap<String,Object>();
-                    listaAttributes.put("nombre","Lista Compra");
-                    listaAttributes.put("fecha",System.currentTimeMillis());
 
-                    String key = database.getReference().child(LISTS).push().getKey();
-                    listaAttributes.put("uid",key);
-                    lista.put(key,listaAttributes);
-                    database.getReference().child(LISTS).setValue(lista);
+                    DatabaseReference listRef = database.getReference().child(LISTS).push();
+                    ListaDto listaActive = new ListaDto();
+                    listaActive.setUid(listRef.getKey());
+                    listaActive.setNombre("Lista Compra");
+                    listaActive.setFecha(System.currentTimeMillis());
+                    String key = listRef.getKey();
+                    listRef.setValue(listaActive);
 
                     /*
                      * Se establece la lista activa
                      */
-                    ListaDto listaActive = new ListaDto();
-                    listaActive.setUid(key);
-                    listaActive.setNombre((String) listaAttributes.get("nombre"));
-                    listaActive.setFecha((Long) listaAttributes.get("fecha"));
-                    listaActive.setActivo((Long) listaAttributes.get("activo"));
 
                     app.setListaFBActive(listaActive);
 

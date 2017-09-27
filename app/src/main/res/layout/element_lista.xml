@@ -25,6 +25,16 @@
         android:visibility="gone"
         />
 
+    <ImageView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/imgShare"
+        app:srcCompat="@drawable/ic_folder_shared"
+        android:layout_toRightOf="@id/txtIdLista"
+        android:visibility="gone" />
+
 
     <ImageView
         android:layout_width="wrap_content"

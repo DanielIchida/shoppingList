@@ -7,8 +7,10 @@ import com.shop.oasaustre.shoppinglist.activity.dialog.CategoriaDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteArticlesDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteCategoriaDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteListaDialog;
+import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteShareListDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.DeleteTiendaDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.ListDialog;
+import com.shop.oasaustre.shoppinglist.activity.dialog.ShareListDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.TiendaDialog;
 import com.shop.oasaustre.shoppinglist.activity.task.firebase.LoadArticlesTask;
 import com.shop.oasaustre.shoppinglist.app.App;
@@ -260,6 +262,35 @@ public class TaskFactory {
         }
         return task;
     }
+
+    public ITask createLoadShareListTask(Activity activity, App app) {
+        ITask task = null;
+        if (app.isUserActive()) {
+            task = new com.shop.oasaustre.shoppinglist.activity.task.firebase.LoadShareListTask(activity);
+        }
+        return task;
+    }
+
+    public ITask createNewShareListTask(ShareListDialog dialog, App app) {
+        ITask task = null;
+        if (app.isUserActive()) {
+            task = new com.shop.oasaustre.shoppinglist.activity.task.firebase.NewShareListTask(dialog);
+        }
+        return task;
+    }
+
+
+    public ITask createDelShareListTask(Activity activity, App app, DeleteShareListDialog dialog, int delPosition){
+        ITask task = null;
+        if(app.isUserActive()){
+            task = new com.shop.oasaustre.shoppinglist.activity.task.firebase.DelShareListTask(activity, dialog, delPosition);
+        }
+
+
+        return task;
+    }
+
+
 
 
 
