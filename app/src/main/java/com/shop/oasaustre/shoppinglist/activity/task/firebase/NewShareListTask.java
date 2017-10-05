@@ -1,6 +1,9 @@
 package com.shop.oasaustre.shoppinglist.activity.task.firebase;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -59,6 +62,11 @@ public class NewShareListTask implements ITask {
                         //Meter en lista compartido
                 }else{
                     dialog.dismiss();
+                    View view = dialog.getActivity().findViewById(R.id.content_share_list);
+                    Snackbar.make(view, "El usuario con quien intenta compartir la lista no está registrado en el sistema.",
+                            Snackbar.LENGTH_LONG).show();
+
+
                     //Firebase Invite
                 }
             }

@@ -154,11 +154,13 @@ public class InitActivity extends AppCompatActivity
             MenuItem menuShare = menu.findItem(R.id.menu_share);
             menuSesion.setTitle("Sesion");
             menuShare.setTitle("Compartir");
+
             MenuItem menuNavShare = menu.findItem(R.id.nav_share);
             MenuItem menuClose = menu.findItem(R.id.nav_sesion);
             menuNavShare.setTitle("Compartir Lista");
+            menuNavShare.setIcon(android.R.drawable.ic_menu_share);
             menuClose.setTitle("Cerrar Session");
-            menuClose.setIcon(R.drawable.ic_euro_symbol);
+            menuClose.setIcon(android.R.drawable.sym_call_incoming);
         }else{
             Menu menu = navigationView.getMenu();
             MenuItem menuSesion = menu.findItem(R.id.menu_sesion);

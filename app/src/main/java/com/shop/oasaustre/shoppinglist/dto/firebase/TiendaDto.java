@@ -55,4 +55,8 @@ public class TiendaDto {
     public void setProvincia(String provincia) {
         this.provincia = provincia;
     }
+
+    public String toString(){
+        return nombre;
+    }
 }

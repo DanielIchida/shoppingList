@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.shop.oasaustre.shoppinglist.R;
-import com.shop.oasaustre.shoppinglist.activity.dialog.CategoriaDialog;
 import com.shop.oasaustre.shoppinglist.activity.dialog.ShareListDialog;
 import com.shop.oasaustre.shoppinglist.activity.task.ITask;
 import com.shop.oasaustre.shoppinglist.activity.task.TaskFactory;
